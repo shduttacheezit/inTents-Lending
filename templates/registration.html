@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>Registration Form</h1><br>
+
+<form action="/registration" method="POST">
+    <div>
+        <label>
+            Registering as: <br>
+            <input type="radio" name="user_type" value="camper" checked>Camper<br>
+            <input type="radio" name="user_type" value="lender"> Lender <br>
+            <input type="radio" name="user_type" value="both"> I'd like to be both! <br>
+        <label>
+            First Name:
+            <input type="text" name="first_name">
+        </label>
+    </div>
+    <br>
+    <div>
+        <label>
+            Last Name
+            <input type="text" name="last_name">
+        </label>
+    </div>
+    <br>
+    <div>
+        <label>
+            Email: 
+            <input type="email" name="email" required>
+        </label>
+    </div>
+    <br>
+    <div>
+        <label>
+            Password: 
+            <input type="password" name="password" required>
+        </label>
+    </div>
+    <br>
+        <label>
+            Upload Your Photo
+            <input type="file" name="photo" accept="image/x-png,image/gif,image/jpeg" required/>
+        </label>
+    </div>
+    <div>
+        <input type="submit" name="register">
+    </div>
+</form>
+
+
+{% endblock %}

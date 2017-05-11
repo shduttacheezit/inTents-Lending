@@ -1,0 +1,22 @@
+<!Doctype HTML>
+<head>
+  <title> AroundaCamp
+  </title>
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.css"/>
+  <link rel="stylesheet" href="/static/css/site.css"/>
+</head>
+
+<body>
+
+{% if "user_id" in session %}
+    <a href="/logout">Logout</a>
+{% else %}
+    <a href="/login-form">Login</a>
+{% endif %}
+
+
+
+{% block content %} put your content here {% endblock %}
+    
+</body>
+</html>
