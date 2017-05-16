@@ -1,22 +1,38 @@
 <!Doctype HTML>
 <head>
-  <title> AroundaCamp
+  <title> inTents Camping
   </title>
   <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.css"/>
   <link rel="stylesheet" href="/static/css/site.css"/>
+  <style>
+    body {
+        margin: 10;
+    }
+  </style>
 </head>
+{% block body %} 
+
+{% endblock %}
 
 <body>
 
-{% if "user_id" in session %}
+<h2>inTents Camping</h2>
+
+<p><h4><a href="/registration">Register Here!</a></h4></p>
+
+{% if "camper_id" in session or "lender_id" in session %}
     <a href="/logout">Logout</a>
 {% else %}
-    <a href="/login-form">Login</a>
+    <a href="/login"><h4>Login</h4></a>
 {% endif %}
 
+{% for message in get_flashed_messages() %}
+<li style="color:green">{{ message }}</li>
+{% endfor %}
 
+{% block content %}
+      <!-- content goes here  -->
+{% endblock %}
 
-{% block content %} put your content here {% endblock %}
-    
 </body>
 </html>

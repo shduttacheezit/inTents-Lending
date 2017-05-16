@@ -1,0 +1,10 @@
+1|leilani@hbmail.com|test|Leilani|Taziri|static/images/sewing_machine.jpg|
+2|katie@hbmail.com|test|Katie|Atkinson|static/images/glue_gun.jpg|
+3|annie@hbmail.com|test|Annie|He|static/images/crafter.jpg|
+4|alena@hbmail.com|test|Alena|Kruchkova|static/images/crafter.jpg|
+5|terri@hbmail.com|test|Terri|Wong|static/images/glue_gun.jpg|
+6|kara@hbmail.com|test|Kara|Yount|static/images/sewing_machine.jpg|
+7|erin@hbmail.com|test|Erin|Allard|static/images/crafter.jpg|
+8|chelsea@hbmail.com|test|Chelsea|Little|static/images/glue_gun.jpg|
+9|alice@hbmail.com|test|Alice|Pao|static/images/sewing_machine.jpg|
+10|shai@hbmail.com|test|Shai|Wilson|static/images/crafter.jpg|

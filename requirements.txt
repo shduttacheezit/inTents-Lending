@@ -1,6 +1,7 @@
 Flask==0.12
 Flask-DebugToolbar==0.10.1
 Flask-SQLAlchemy==2.2
+Flask-Uploads==0.2.0
 Jinja2==2.7.3
 psycopg2==2.7.1
 SQLAlchemy==1.1.7

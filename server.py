@@ -2,6 +2,7 @@ from jinja2 import StrictUndefined
 
 from flask import Flask, jsonify, render_template, redirect, request, flash, session
 from flask_debugtoolbar import DebugToolbarExtension
+from flask.ext.uploads import UploadSet, configure_uploads, IMAGES, patch_request_class
 
 from model import connect_to_db, db, Lender, Camper, Equipment, RentedOut
 from datetime import datetime
@@ -18,10 +19,19 @@ app.secret_key = "ABC"
 # error.
 app.jinja_env.undefined = StrictUndefined
 
+photos = UploadSet('photos', IMAGES)
+
+app.config['UPLOADED_PHOTOS_DEST'] = 'static/images/profpics'
+app.config['UPLOADED_PHOTOS_ALLOW'] = set(['jpg', 'png', 'jpeg', 'gif', 'JPG'])
+
+configure_uploads(app, (photos))
+patch_request_class(app)
+
 
 @app.route('/')
 def index():
     """Homepage."""
+
 
     return render_template("homepage.html")
 
@@ -45,6 +55,8 @@ def registration_process():
     if user_type == 'camper': 
         if Camper.query.filter_by(email=email).first() is None:
             camper_photo = request.form.get('photo')
+            filename = photos.save(request.files['photo'])
+            camper_photo = str(photos.path(filename))
             user = Camper(email=email,
                         password=password,
                         first_name=first_name,
@@ -52,14 +64,18 @@ def registration_process():
                         camper_photo=camper_photo)
             db.session.add(user)
             db.session.commit()
-            flash('You were successfully added')
+            flash('You are successfully registered!')
+            session['camper_id'] = user.user_id
+            return redirect('/camper')
         else:
-            flash('Oops, you are already in the database! Try again.')
-            return redirect('/registration')
+            flash('Oops, your e-mail already exists as a user. Please log in.')
+            return redirect('/login')
 
     if user_type == 'lender': 
         if Lender.query.filter_by(email=email).first() is None:
             lender_photo = request.form.get('photo')
+            filename = photos.save(request.files['photo'])
+            lender_photo = str(photos.path(filename))
             user = Lender(email=email,
                         password=password,
                         first_name=first_name,
@@ -67,10 +83,12 @@ def registration_process():
                         lender_photo=lender_photo)
             db.session.add(user)
             db.session.commit()
-            flash('You were successfully added')
+            flash('You are successfully registered!')
+            session['lender_id'] = user.user_id
+            return redirect('/lender')
         else:
-            flash('Oops, you are already in the database! Try again.')
-            return redirect('/registration')
+            flash('Oops, your e-mail already exists as a user. Please log in.')
+            return redirect('/login')
 
 
     return redirect('/')
@@ -80,23 +98,37 @@ def registration_process():
 def login():
     """Allow user to login with password"""
 
-    email = request.form.get('email')
-    password = request.form.get('password')
-
-    sys_email = User.query.filter_by(email=email).first()
-
     if request.method == 'POST':
-        if sys_email is None:
-            flash('Invalid credentials')
-            return redirect('/login-form')
-        elif email == sys_email.email:
-            if password == sys_email.password:
-                flash('You were successfully logged in')
-                session["user_id"] = sys_email.user_id
-                return redirect('/users/%s' % sys_email.user_id)
+        email = request.form.get('email')
+        password = request.form.get('password')
+        user_type = request.form.get('user_type')
+
+        if user_type == 'camper':
+            sys_email = Camper.query.filter_by(email=email).first()
+            if sys_email is None:
+                flash('You are not signed up yet! Please register.')
+                return redirect('/registration')
+            elif email == sys_email.email:
+                if password == sys_email.password:
+                    flash('You were successfully logged in')
+                    session['camper_id'] = sys_email.camper_id
+                    return redirect('/camper/%s' % sys_email.camper_id)
             else:
                 flash('That is not your password. Try again')
                 return redirect('/login-form')
+        if user_type == 'lender': 
+            sys_email = Lender.query.filter_by(email=email).first()
+            if sys_email is None:
+                flash('You are not signed up yet! Please register.')
+                return redirect('/registration')
+            elif email == sys_email.email:
+                if password == sys_email.password:
+                    flash('You were successfully logged in')
+                    session['lender_id'] = sys_email.lender_id
+                return redirect('/lender/%s' % sys_email.lender_id)
+            else:
+                flash('That is not your password. Try again')
+                return redirect('/login')
 
     return render_template('login.html')
 
@@ -105,7 +137,11 @@ def login():
 def logout():
     """Log out."""
 
-    del session['user_id']
+    if session.get('camper_id') != None:
+        del session['camper_id']
+    if session.get('lender_id') != None:
+        del session['lender_id']
+
     flash('Logged out.')
     return redirect('/')
 

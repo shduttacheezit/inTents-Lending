@@ -1,0 +1,10 @@
+1|mruffalo@hbright.com|lender1|Mark|Ruffalo|static/images/profpics/mruffalo.jpg|
+2|reesew@hbright.com|lender2|Reese|Witherspoon|static/images/profpics/rwitherspoon.jpg|
+3|hjackman@hbright.com|lender3|Hugh|Jackman|static/images/profpics/hjackman.jpg|
+4|alena@hbmail.com|test|Alena|Kruchkova|static/images/crafter.jpg|
+5|terri@hbmail.com|test|Terri|Wong|static/images/glue_gun.jpg|
+6|kara@hbmail.com|test|Kara|Yount|static/images/sewing_machine.jpg|
+7|erin@hbmail.com|test|Erin|Allard|static/images/crafter.jpg|
+8|chelsea@hbmail.com|test|Chelsea|Little|static/images/glue_gun.jpg|
+9|alice@hbmail.com|test|Alice|Pao|static/images/sewing_machine.jpg|
+10|shai@hbmail.com|test|Shai|Wilson|static/images/crafter.jpg|

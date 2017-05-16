@@ -1,4 +1,7 @@
 {% extends 'base.html' %}
+{% block body %}
+
+{% endblock %}
 {% block content %}
 
 <h1>Log In</h1>
@@ -6,6 +9,10 @@
 <form action="/login" method="POST">
 
     <div>
+        <label>
+            Logging in as: 
+            <input type="radio" name="user_type" value="camper" checked>Camper
+            <input type="radio" name="user_type" value="lender"> Lender <br>
         <label>
             Email: 
             <input type="email" name="email" required>

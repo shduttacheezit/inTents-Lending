@@ -1,0 +1,11 @@
+gear_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    gear_name = db.Column(db.String(255), nullable=False)
+    category = db.Column(db.String(64), nullable=False)
+    brand = db.Column(db.String(64), nullable=False)
+    lender_id = db.Column(db.Integer, db.ForeignKey('lenders.lender_id'), nullable=False)
+    zipcode = db.Column(db.Integer, nullable=False)
+    gear_photo = db.Column(db.String(255), nullable=False)
+
+
+1|mruffalo@hbright.com|lender1|Mark|Ruffalo|static/images/profpics/mruffalo.jpg|
+
