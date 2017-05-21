@@ -4,7 +4,85 @@
 {% block content %}
 
 
+<div class="container-medium">
 <h1>Lender Dashboard</h1>
+<form action="/equipment/<lender_id>" method="POST" enctype="multipart/form-data">
+    <div>
+      Upload Equipment! <br>
+      <label>
+        Category:
+            <select id="category-type-field" name="category_type" class="form-control" required>
+              <option>Backpacks & Bags</option>
+              <option>Camp Electronics</option>
+              <option>Camp Furniture</option>
+              <option>Camp Kitchen</option>
+              <option>Camp Lighting</option>
+              <option>Camp Electronics</option>
+              <option>Hydration</option>
+              <option>Knives & Tools</option>
+              <option>Sleeping Bags</option>
+              <option>Tents & Shelter</option>
+              </select>
+        </label>
+    </div>
+    <br>
+    <div>
+        <label>
+            Brand:
+            <select id="brand-type-field" name="brand_type" class="form-control" required>
+                    <option>Big Agnes</option>
+                    <option>Black Diamond</option>
+                    <option>CamelBak</option>
+                    <option>Evernew</option>
+                    <option>GSI</option>
+                    <option>Hydro Flask</option>
+                    <option>Marmot</option>
+                    <option>Mountain Hardwear</option>
+                    <option>MSR</option>
+                    <option>Nemo</option>
+                    <option>Osprey</option>
+                    <option>Patagonia</option>
+                    <option>REI</option>
+                    <option>Sea to Summit</option>
+                    <option>Sierra Designs</option>
+                    <option>Snow Peak</option>
+                    <option>Terra Nova</option>
+                    <option>The North Face</option>
+                </select>
+        </label>
+    </div>
+    <br>
+    <div>
+        <label>
+            Name:
+            <input type="text" name="gear-name" required>
+        </label>
+    </div>
+    <br>
+    <div>
+        <label>
+            Zipcode:
+            <input type="text" name="zipcode" required>
+        </label>
+    </div>
+    <br>
+    <div>
+        <label>
+            Upload Photo of Equipment:
+            <input type="file" name="photo" accept="image/x-png,image/gif,image/jpeg" required/>
+        </label>
+    </div>
+    <div>
+        <input type="submit" name="register">
+    </div>
+  </form>
+</div>
+<br>
+<div class="container-medium2">
+  <form action='/equipment/{{ lender.lender_id }}'>
+    <input type="submit" value="Check out your equipment" id="showmequip"/>
+  </form> 
+</div>
 
 
 

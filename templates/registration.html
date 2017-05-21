@@ -3,15 +3,19 @@
 {% endblock %}
 {% block content %}
 
-
+<div class="container-medium" id="registration">
 <h1>Registration Form</h1><br>
 
 <form action="/registration" method="POST" enctype="multipart/form-data">
     <div>
         <label>
             Registering as: <br>
-            <input type="radio" name="user_type" value="camper" checked>Camper<br>
-            <input type="radio" name="user_type" value="lender"> Lender <br>
+            <input type="radio" name="user_type" value="camper" checked>Camper
+            <input type="radio" name="user_type" value="lender"> Lender 
+        </label>
+    </div>
+    <br>
+    <div>
         <label>
             First Name:
             <input type="text" name="first_name">
@@ -39,6 +43,7 @@
         </label>
     </div>
     <br>
+    <div>
         <label>
             Upload Your Photo
             <input type="file" name="photo" accept="image/x-png,image/gif,image/jpeg" required/>
@@ -48,6 +53,7 @@
         <input type="submit" name="register">
     </div>
 </form>
+</div>
 
 
 {% endblock %}

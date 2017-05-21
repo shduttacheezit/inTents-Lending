@@ -13,6 +13,7 @@ class Lender(db.Model):
     first_name = db.Column(db.String(64), nullable=False)
     last_name = db.Column(db.String(64), nullable=False)
     lender_photo = db.Column(db.String(255), nullable=False)
+    lender_photo_url = db.Column(db.String(255), nullable=False)
 
     equipment = db.relationship("Equipment")
     rentedout = db.relationship("RentedOut")
@@ -27,6 +28,7 @@ class Camper(db.Model):
     first_name = db.Column(db.String(64), nullable=False)
     last_name = db.Column(db.String(64), nullable=False)
     camper_photo = db.Column(db.String(255), nullable=False)
+    camper_photo_url = db.Column(db.String(255), nullable=False)
 
     rentedout = db.relationship("RentedOut")
 
@@ -41,6 +43,7 @@ class Equipment(db.Model):
     lender_id = db.Column(db.Integer, db.ForeignKey('lenders.lender_id'), nullable=False)
     zipcode = db.Column(db.Integer, nullable=False)
     gear_photo = db.Column(db.String(255), nullable=False)
+    gear_photo_url = db.Column(db.String(255), nullable=False)
 
     lender = db.relationship("Lender")
 

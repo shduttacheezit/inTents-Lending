@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block body %}
+{% endblock %}
+{% block content %}
+
+
+
+<div class="container-medium">
+
+<h1>Your Equipment</h1>
+
+
+<ul>
+    {% for gear in equipment %}
+        <li>{{ gear.gear_name }}<br><img src="http://localhost:5000/{{ gear.gear_photo }}" width="200" height="150"></li>
+    {% endfor %}
+</ul>
+
+</div>
+
+
+{% endblock %}
+
+{% block javascript %}
+{% endblock %}

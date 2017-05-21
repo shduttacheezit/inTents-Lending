@@ -1,11 +1,11 @@
 from jinja2 import StrictUndefined
-
 from flask import Flask, jsonify, render_template, redirect, request, flash, session
 from flask_debugtoolbar import DebugToolbarExtension
-from flask.ext.uploads import UploadSet, configure_uploads, IMAGES, patch_request_class
+from flask_uploads import UploadSet, configure_uploads, IMAGES, patch_request_class
 
 from model import connect_to_db, db, Lender, Camper, Equipment, RentedOut
 from datetime import datetime
+import collections
 
 
 app = Flask(__name__)
@@ -57,15 +57,17 @@ def registration_process():
             camper_photo = request.form.get('photo')
             filename = photos.save(request.files['photo'])
             camper_photo = str(photos.path(filename))
+            camper_photo_url = photos.url(filename)
             user = Camper(email=email,
                         password=password,
                         first_name=first_name,
                         last_name=last_name,
-                        camper_photo=camper_photo)
+                        camper_photo=camper_photo,
+                        camper_photo_url=camper_photo_url)
             db.session.add(user)
             db.session.commit()
             flash('You are successfully registered!')
-            session['camper_id'] = user.user_id
+            session['camper_id'] = user.camper_id
             return redirect('/camper')
         else:
             flash('Oops, your e-mail already exists as a user. Please log in.')
@@ -76,15 +78,17 @@ def registration_process():
             lender_photo = request.form.get('photo')
             filename = photos.save(request.files['photo'])
             lender_photo = str(photos.path(filename))
+            lender_photo_url = photos.url(filename)
             user = Lender(email=email,
                         password=password,
                         first_name=first_name,
                         last_name=last_name,
-                        lender_photo=lender_photo)
+                        lender_photo=lender_photo,
+                        lender_photo_url=lender_photo_url)
             db.session.add(user)
             db.session.commit()
             flash('You are successfully registered!')
-            session['lender_id'] = user.user_id
+            session['lender_id'] = user.lender_id
             return redirect('/lender')
         else:
             flash('Oops, your e-mail already exists as a user. Please log in.')
@@ -145,37 +149,106 @@ def logout():
     flash('Logged out.')
     return redirect('/')
 
+@app.route('/dashboard')
+def dashboard():
+    """Shows dashboard from homepage of user logged in"""
+
+    lender_id = session.get("lender_id")
+    camper_id = session.get("camper_id")
+    if camper_id: 
+        camper = Camper.query.filter_by(camper_id=camper_id).first()
+        return render_template("camper.html", camper=camper)
+    elif lender_id: 
+        lender = Lender.query.filter_by(lender_id=lender_id).first()
+        return render_template("lender.html", lender=lender)
+    else:
+        raise Exception("Oopsies. You have to login first!")
+
 
 @app.route('/camper/<camper_id>', methods=['GET'])
 def camper_dashboard(camper_id):
-    """Camper dashboard"""
+    """Camper can search through available gear"""
 
+    camper = Camper.query.filter_by(camper_id=camper_id).first()
+
+    lender_id = session.get("lender_id")
+    if lender_id:
+        raise Exception("No camper logged in!")
 
     return render_template("camper.html")
 
 @app.route('/camper/<camper_id>', methods=['POST'])
 def camper_details(camper_id):
-    """Camper dashboard - process"""
+    """Camper can search through equipment available"""
 
+    camper = Camper.query.filter_by(camper_id=camper_id).first()
 
-    return render_template("camper.html")
+    equipment = Equipment.query.filter_by()
+
+    lender_id = session.get("lender_id")
+    if lender_id:
+        raise Exception("No camper logged in!")
+
+    return render_template("camper.html", )
+
+@app.route('/gear.json', methods=['POST'])
+def search_equipment(camper_id):
+    """Dumping equipment data into json dictionary"""
+
+    equipment = []
+
+    equip = db.session.query(Equipment).all()
+
+    for e in equip:
+        d = {
+        'gear_name': e.gear_name,
+        'category' : e.category,
+        'brand' : e.brand,
+        'zipcode' : e.zipcode}
+        equipment.append(d)
+
+    return json.dumps(equipment)
 
 
 @app.route('/lender/<lender_id>', methods=['GET'])
 def lender_profile(lender_id):
-    """Lender Dashboard"""
+    """Lender can view their posted gear and availability status"""
 
+    lender = Lender.query.filter_by(lender_id=lender_id).first()
 
-    return render_template("lender.html")
+    camper_id = session.get("camper_id")
+    if camper_id:
+        raise Exception("Hey there, camper! If you want to lend gear out, please log in separately.")
+
+    return render_template("lender.html", lender=lender)
 
 
 @app.route('/lender/<lender_id>', methods=['POST'])
 def lender_profile_details(lender_id):
-    """Lender Dashboard - """
+    """Lender can upload equipment"""
+
+    lender = Lender.query.filter_by(lender_id=lender_id).first()
+
+    flash('successfully uploaded your gear!')
+
+    camper_id = session.get("camper_id")
+    if camper_id:
+        raise Exception("Hey there, camper! If you want to lend gear out, please log in separately.")
+
+    return render_template("lender.html", lender=lender)
+
+@app.route('/equipment/<lender_id>', methods=['GET'])
+def lender_equipment(lender_id):
+    """Display lender's equipment"""
+
+    equipment = Equipment.query.filter_by(lender_id=lender_id).all()
+
+    camper_id = session.get("camper_id")
+    if camper_id:
+        raise Exception("Hey there, camper! If you want to lend gear out, please log in separately.")
 
 
-
-    return redirect("/movies/%s" % movie_id)
+    return render_template("equipment.html", lender_id=lender_id, equipment=equipment)
 
 
 
