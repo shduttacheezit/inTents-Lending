@@ -3,335 +3,161 @@
 {% endblock %}
 {% block content %}
 
-
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBkVKbb87Oi9ZZlYaOS9qiot9fjD98Ezkc&callback=initMap&libraries=places"
+     async defer></script>
+     
+<div class="container-mdlg">
 <h1>Camper Dashboard</h1>
-    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
-    <meta charset="utf-8">
-    
-    <style>
-      #searchmap {
-        height: 279px;
-        position: relative;
-        overflow: hidden;
-      }
-      html, body {
-        height: 75%;
-        margin: 0;
-        padding: 0;
-      }
-      #description {
-        font-family: Roboto;
-        font-size: 15px;
-        font-weight: 300;
-      }
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+  <meta charset="utf-8">
+  
+  <style>
+    #search-map {
+    height: 100%;
+    }
+    #description {
+    font-family: Raleway;
+    font-size: 15px;
+    font-weight: 300;
+    }
 
-      #infowindow-content .title {
-        font-weight: bold;
-      }
+    #infowindow-content .title {
+    font-weight: bold;
+    }
 
-      #infowindow-content {
-        display: none;
-      }
+    #infowindow-content {
+    display: none;
+    }
 
-      #searchmap #infowindow-content {
-        display: inline;
-      }
+    #search-map #infowindow-content {
+    display: inline;
+    }
 
-      .pac-card {
-        margin: 10px 10px 0 0;
-        border-radius: 2px 0 0 2px;
-        box-sizing: border-box;
-        -moz-box-sizing: border-box;
-        outline: none;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-        background-color: #fff;
-        font-family: Roboto;
-      }
+    .pac-card {
+    margin: 10px 10px 0 0;
+    border-radius: 2px 0 0 2px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    outline: none;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    background-color: #fff;
+    font-family: Roboto;
+    }
 
-      #pac-container {
-        padding-bottom: 12px;
-        margin-right: 12px;
-      }
+    #pac-container {
+    padding-bottom: 12px;
+    margin-right: 12px;
+    }
 
-      .pac-controls {
-        display: inline-block;
-        padding: 5px 11px;
-      }
+    .pac-controls {
+    display: inline-block;
+    padding: 5px 11px;
+    }
 
-      .pac-controls label {
-        font-family: Roboto;
-        font-size: 13px;
-        font-weight: 300;
-      }
+    .pac-controls label {
+    font-family: Roboto;
+    font-size: 13px;
+    font-weight: 300;
+    }
 
-      #pac-input {
-        background-color: #fff;
-        font-family: Roboto;
-        font-size: 15px;
-        font-weight: 300;
-        margin-left: 12px;
-        padding: 0 11px 0 13px;
-        text-overflow: ellipsis;
-        width: 400px;
-      }
+    #pac-input {
+    background-color: #fff;
+    font-family: 'Raleway';
+    font-size: 15px;
+    font-weight: 300;
+    margin-left: 12px;
+    padding: 0 11px 0 13px;
+    overflow: ellipsis;
+    width: 400px;
+    }
 
-      #pac-input:focus {
-        border-color: #4d90fe;
-      }
+    #pac-input:focus {
+    border-color: #4d90fe;
+    }
 
-      #title {
-        color: #fff;
-        background-color: #4d90fe;
-        font-size: 25px;
-        font-weight: 500;
-        padding: 6px 12px;
-      }
-      #target {
-        width: 345px;
-      }
-    </style>
+/*    #title {
+    color: #fff;
+    background-color: #4d90fe;
+    font-size: 25px;
+    font-weight: 500;
+    padding: 6px 12px;
+    }*/
+    #target {
+    width: 345px;
+    }
+  </style>
 
-    <div class="col-sm-3 col-md-6 col-lg-4">
-        <form id="search-gear">
-            <h2>Search Equipment</h2>
-        <div class="form-gear">
-            <label>Gear keywords
-                <input class="form-control" type="text" name="gear_keywords" id="gear-name-field">
-            </label>
-        </div>
-
-        <div class="search-gear">
-            <label>Brand
-                <select id="brand-type-field" name="brand_type" class="form-control">
-                    <option>Big Agnes</option>
-                    <option>Black Diamond</option>
-                    <option>CamelBak</option>
-                    <option>Evernew</option>
-                    <option>GSI</option>
-                    <option>Hydro Flask</option>
-                    <option>Marmot</option>
-                    <option>Mountain Hardwear</option>
-                    <option>MSR</option>
-                    <option>Nemo</option>
-                    <option>Osprey</option>
-                    <option>Patagonia</option>
-                    <option>REI</option>
-                    <option>Sea to Summit</option>
-                    <option>Sierra Designs</option>
-                    <option>Snow Peak</option>
-                    <option>Terra Nova</option>
-                    <option>The North Face</option>
-                </select>
-            </label>
-        </div>
-
-        <div class="search-gear">
-            <label>Category
-                <select id="category-type-field" name="category_type" class="form-control">
-                    <option>Backpacks & Bags</option>
-                    <option>Camp Electronics</option>
-                    <option>Camp Furniture</option>
-                    <option>Camp Kitchen</option>
-                    <option>Camp Lighting</option>
-                    <option>Camp Electronics</option>
-                    <option>Hydration</option>
-                    <option>Knives & Tools</option>
-                    <option>Sleeping Bags</option>
-                    <option>Tents & Shelter</option>
-                </select>
-            </label>
-        </div>
-
-        <div class="form-gear">
-            <button type="submit" id="order-form-button" class="btn btn-primary">Search</button>
-        </div>
-        </form>
+  <div>
+    <form id="search-gear">
+      <h2>Search Equipment</h2>
+    <div class="search-gear">
+      <label>Gear keyword
+        <input class="form-control" type="text" name="gear_keywords" id="gear-name-field">
+      </label>
     </div>
 
-    <div id="search-results-list">
-        <div id="search-results-list-gear">
-            <img class="gear-image" src="http://localhost:5000/static/images/gear/gear_photo.jpg" width="200" height="150">
-            <div class="gear-basics">
+    <div class="search-gear">
+      <label>Brand
+        <select id="brand-type-field" name="brand_type" class="form-control">
+          <option>Big Agnes</option>
+          <option>Black Diamond</option>
+          <option>CamelBak</option>
+          <option>Evernew</option>
+          <option>GSI</option>
+          <option>Hydro Flask</option>
+          <option>Marmot</option>
+          <option>Mountain Hardwear</option>
+          <option>MSR</option>
+          <option>Nemo</option>
+          <option>Osprey</option>
+          <option>Patagonia</option>
+          <option>REI</option>
+          <option>Sea to Summit</option>
+          <option>Sierra Designs</option>
+          <option>Snow Peak</option>
+          <option>Terra Nova</option>
+          <option>The North Face</option>
+        </select>
+      </label>
+    </div>
+
+    <div class="search-gear">
+      <label>Category
+        <select id="category-type-field" name="category_type" class="form-control">
+          <option>Backpacks & Bags</option>
+          <option>Camp Electronics</option>
+          <option>Camp Furniture</option>
+          <option>Camp Kitchen</option>
+          <option>Camp Lighting</option>
+          <option>Camp Electronics</option>
+          <option>Hydration</option>
+          <option>Knives & Tools</option>
+          <option>Sleeping Bags</option>
+          <option>Tents & Shelter</option>
+        </select>
+      </label>
+    </div>
+
+    <div class="search-gear">
+      <button type="submit" id="search-gear" class="btn btn-primary">Search</button>
+    </div>
+    </form>
+  </div>
+
+  <div id="search-results-list">
+    <div id="search-results-list-gear">
+      <div class="gear-basics">
+      </div>
+    </div>
+  </div>
 
 
-    <input id="pac-input" class="controls" type="text" placeholder="Search Box">
-    <div id="searchmap" class="col-sm-9 col-md-6 col-lg-8"></div>
-   
+  <input id="pac-input" class="controls" type="text" placeholder="Search Box">
 
-    <script>
+  <div id="search-map"></div>
 
-    google.maps.event.addDomListener(window, 'load', initialize);
-    var geocoder;
-    var map;
-    var places;
-    var markers = [];
-
-    function initialize() {
-    $.get('/gear.json', function (latlongs) {
-        
-            var point = latlongs['features']
-            for (i = 0; i < point.length; i++){
-              if ("{{destination}}" === point[i]['properties']['code']){
-                var latitude = point[i]['properties']['latitude']
-                var longitude = point[i]['properties']['longitude'];
-                    var latlng = new google.maps.LatLng(latitude, longitude);
-                    var mapOptions = {
-                      center: latlng,
-                      scrollWheel: false,
-                      zoom: 13
-                    };
-                    
-                    var marker = new google.maps.Marker({
-                      position: latlng,
-                      url: '/',
-                      animation: google.maps.Animation.DROP
-                    });
-                    
-                    var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
-                    marker.setMap(map);
-                  };
-                };
-              });
-              }
-    </script>
-    <script>
-
-        function initMap() {
-            // var LatLng = {lat: -34.397, lng: 150.644};
-
-            var infoWindow = new google.maps.InfoWindow;
-
-            var map = new google.maps.Map(document.getElementById('searchmap'), {
-                zoom: 6
-            });
-
-            // Try HTML5 geolocation.
-            if (navigator.geolocation) {
-              navigator.geolocation.getCurrentPosition(function(position) {
-                var pos = {
-                  lat: position.coords.latitude,
-                  lng: position.coords.longitude
-                };
-
-                var marker = new google.maps.Marker({
-                    position: pos,
-                    map: map,
-                    title: 'You are here!'
-                });
-
-                infoWindow.setPosition(pos);
-                infoWindow.setContent('Location found.');
-                infoWindow.open(map, marker);
-                map.setCenter(pos);
-              }, function() {
-                handleLocationError(true, infoWindow, map.getCenter());
-              });
-            } else {
-              // Browser doesn't support Geolocation
-              handleLocationError(false, infoWindow, map.getCenter());
-            }
-
-            var geocoder = new google.maps.Geocoder();
-
-            document.getElementById('submit').addEventListener('click', function() {
-                geocodeAddress(geocoder, map);
-            });
-
-            function geocodeAddress(geocoder, resultsMap) {
-                var address = document.getElementById('address').value;
-                geocoder.geocode({'address': address}, function(results, status) {
-                    if (status === 'OK') {
-                        resultsMap.setCenter(results[0].geometry.location);
-                        // dont set this
-                        // iterate over each zip in your db and place markers
-                        var marker = new google.maps.Marker({
-                            map: resultsMap,
-                            position: results[0].geometry.location
-                        });
-                        } else {
-                            alert('Geocode was not successful for the following reason: ' + status);
-                        }
-                    });
-            }
-        }
-
-        function initAutocomplete() {
-            var map = new google.maps.Map(document.getElementById('searchmap'), {
-                center: {lat: -33.8688, lng: 151.2195},
-                zoom: 13,
-                mapTypeId: 'roadmap'
-            });
-
-            // Create the search box and link it to the UI element.
-            var input = document.getElementById('pac-input');
-            var searchBox = new google.maps.places.SearchBox(input);
-            map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
-
-            // Bias the SearchBox results towards current map's viewport.
-            map.addListener('bounds_changed', function() {
-                searchBox.setBounds(map.getBounds());
-            });
-
-            var markers = [];
-            // Listen for the event fired when the user selects a prediction and retrieve
-            // more details for that place.
-            searchBox.addListener('places_changed', function() {
-                var places = searchBox.getPlaces();
-                if (places.length == 0) {
-                    return;
-                }
-                // Clear out the old markers.
-                markers.forEach(function(marker) {
-                    marker.setMap(null);
-                });
-
-                markers = [];
-
-                // For each place, get the icon, name and location.
-                var bounds = new google.maps.LatLngBounds();
-                places.forEach(function(place) {
-                    if (!place.geometry) {
-                        console.log("Returned place contains no geometry");
-                        return;
-                    }
-                    var icon = {
-                        url: place.icon,
-                        size: new google.maps.Size(71, 71),
-                        origin: new google.maps.Point(0, 0),
-                        anchor: new google.maps.Point(17, 34),
-                        scaledSize: new google.maps.Size(25, 25)
-                    };
-
-                    // Create a marker for each place.
-                    markers.push(new google.maps.Marker({
-                        map: map,
-                        icon: icon,
-                        title: place.name,
-                        position: place.geometry.location
-                    }));
-
-                    if (place.geometry.viewport) {
-                        // Only geocodes have viewport.
-                        bounds.union(place.geometry.viewport);
-                        } else {
-                            bounds.extend(place.geometry.location);
-                        }
-                });
-                map.fitBounds(bounds);
-            });
-        }
-
-        function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-            infoWindow.setPosition(pos);
-            infoWindow.setContent(browserHasGeolocation ?
-                'Error: The Geolocation service failed.' :
-                'Error: Your browser doesn\'t support geolocation.');
-            infoWindow.open(map);
-            }
-    </script>
-
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBkVKbb87Oi9ZZlYaOS9qiot9fjD98Ezkc&libraries=places&callback=initMap&callback=initAutocomplete"
-         async defer></script>
+  <script src="../static/js/camper.js" type="text/javascript">
+  </script> 
 
 
 {% endblock %}

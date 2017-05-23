@@ -6,24 +6,24 @@
   <link rel="stylesheet" href="/static/css/site.css"/>
   <script src="http://code.jquery.com/jquery.js"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-  <link href="https://fonts.googleapis.com/css?family=Indie+Flower|La+Belle+Aurore|Shadows+Into+Light|Raleway" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Amatic+SC|Indie+Flower|Josefin+Slab|La+Belle+Aurore|Open+Sans+Condensed:300|Oswald|Raleway|Shadows+Into+Light" rel="stylesheet">
   <style>
     body {
       margin: 10;
       background-color: #d1decc;
-      padding: 50px;
+      padding: 25px;
     }
   </style>
   <div class="menubar">
   <ul>
-    <li><a href="/"><img src="/static/images/intentslogo.png" width="250" height="250" id="logo"></a></li>
-    <li><a href="/registration"><h4>Register Here!</h4></a></li>
-    <li>{% if "camper_id" in session or "lender_id" in session %}
+    <li class="logo"><a href="/"><img src="/static/images/intentslogo.png" width="250" height="250"></a></li>
+    <li class="item"><a href="/registration"><h4>Register Here!</h4></a></li>
+    <li class="item">{% if "camper_id" in session or "lender_id" in session %}
           <a href="/logout"><h4>Logout</h4></a>
         {% else %}
           <a href="/login"><h4>Login</h4></a>
         {% endif %} </li>
-    <li><a href="/dashboard"><h4>Your Dashboard</h4></a></li>
+    <li class="item"><a href="/dashboard"><h4>Your Dashboard</h4></a></li>
   </ul>
   </div>
 </head>
@@ -35,10 +35,16 @@
   <div class="container-large">
   </div>
 
-
-{% for message in get_flashed_messages() %}
-<li style="color:green">{{ message }}</li>
-{% endfor %}
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <script>
+      var messages = {{ messages | safe }};
+      for (var i=0; i<messages.length; i++) {
+        alert(messages[i]);
+      }
+    </script>
+  {% endif %}
+{% endwith %}
 
 {% block content %}
       <!-- content goes here  -->
@@ -59,38 +65,66 @@ li {
   display: inline;
   padding: 10px;
 }
-li a {
+li.item a {
   display: inline;
-  color: #112e05;
   text-align: center;
   font-family: 'La Belle Aurore';
-  font-size: 20px;
-  padding: 14px 16px;
+  color: #112E05;
+  padding: 25px 30px;
 }
+li.item a:hover {
+  color: #effce8;
+}
+
 .container-large {
   width: 800px;
   height:600px;
 
 }
 .container-medium {
-  width:375px;
-  height: 300px;
-  position: relative;
-  margin-left: 40%;
-  margin-top: -40%;
-  margin-bottom: 5em;
-  vertical-align: middle;
-  font-family: 'Raleway';
+  width:400px;
+  height: 600px;
+  position: absolute;
+  top: 5em;
 }
 .container-medium2 {
-  width:350px;
-  height: 300px;
-  position: relative;
-  margin-right: 40%;
-  margin-top: -40%;
-  margin-bottom: 5em;
-  vertical-align: middle;
-  font-family: 'Raleway';
+  width:400px;
+  height: 600px;
+  position: absolute;
+  top: 25em;
+  left:5em;
+}
+.container-mdlg {
+  width: 860px;
+  height: 600px;
+  position: absolute;
+  margin-top: -25%;
+  margin-left: 10em;
+  margin-right: 10em;
+}
+h1,h2 {
+    font-family: 'Amatic SC';
+    letter-spacing: 2px;
+}
+.registration {
+  font-family: 'Josefin Slab';
+  letter-spacing: 2px;
+}
+.login {
+  font-family: 'Josefin Slab';
+  letter-spacing: 2px;
+}
+.upload {
+  font-family: 'Josefin Slab';
+  letter-spacing: 2px;
+}
+#showmequip {
+  font-family: 'Josefin Slab';
+  letter-spacing: 2px;
+}
+.search-gear {
+  font-family: 'Josefin Slab';
+  letter-spacing: 2px;
 }
 
 </style>

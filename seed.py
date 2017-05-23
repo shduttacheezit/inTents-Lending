@@ -69,7 +69,7 @@ def load_rentedout():
 def set_val_camper_id():
     """Set value for the next camper_id after seeding database"""
 
-    # Get the Max user_id in the database
+    # Get the Max id in the database
     result = db.session.query(func.max(Camper.camper_id)).one()
     max_id = int(result[0])
 
@@ -81,12 +81,24 @@ def set_val_camper_id():
 def set_val_lender_id():
     """Set value for the next lender_id after seeding database"""
 
-    # Get the Max user_id in the database
+    # Get the Max id in the database
     result = db.session.query(func.max(Lender.lender_id)).one()
     max_id = int(result[0])
 
     # Set the value for the next user_id to be max_id + 1
-    query = "SELECT setval('lenderss_lender_id_seq', :new_id)"
+    query = "SELECT setval('lenders_lender_id_seq', :new_id)"
+    db.session.execute(query, {'new_id': max_id + 1})
+    db.session.commit()
+
+def set_val_gear_id():
+    """Set value for the next gear_id after seeding database"""
+
+    # Get the Max id in the database
+    result = db.session.query(func.max(Equipment.gear_id)).one()
+    max_id = int(result[0])
+
+    # Set the value for the next id to be max_id + 1
+    query = "SELECT setval('equipment_gear_id_seq', :new_id)"
     db.session.execute(query, {'new_id': max_id + 1})
     db.session.commit()
 
@@ -103,3 +115,4 @@ if __name__ == "__main__":
     load_rentedout()
     set_val_camper_id
     set_val_lender_id
+    set_val_gear_id

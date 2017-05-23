@@ -183,16 +183,21 @@ def camper_details(camper_id):
 
     camper = Camper.query.filter_by(camper_id=camper_id).first()
 
-    equipment = Equipment.query.filter_by()
+    equipment = db.session.query.Equipment.all()
+
+    gear_keyword = request.form.get("gear-name-field")
+    category = request.form.get("category-type-field")
+    brand = request.form.get("brand-type-field")
+    zipcode = request.form.get("pac-input")
 
     lender_id = session.get("lender_id")
     if lender_id:
         raise Exception("No camper logged in!")
 
-    return render_template("camper.html", )
+    return render_template("camper.html", camper=camper, equipment=equipment)
 
 @app.route('/gear.json', methods=['POST'])
-def search_equipment(camper_id):
+def json_equipment():
     """Dumping equipment data into json dictionary"""
 
     equipment = []
@@ -210,9 +215,9 @@ def search_equipment(camper_id):
     return json.dumps(equipment)
 
 
-@app.route('/lender/<lender_id>', methods=['GET'])
+@app.route('/lender/<lender_id>', methods=['GET', 'POST'])
 def lender_profile(lender_id):
-    """Lender can view their posted gear and availability status"""
+    """Lender profile to view their posted gear and upload equipment"""
 
     lender = Lender.query.filter_by(lender_id=lender_id).first()
 
@@ -220,20 +225,26 @@ def lender_profile(lender_id):
     if camper_id:
         raise Exception("Hey there, camper! If you want to lend gear out, please log in separately.")
 
-    return render_template("lender.html", lender=lender)
+    category = request.form.get('category_type')
+    brand = request.form.get('brand_type')
+    gear_name = request.form.get('gear_name')
+    zipcode = request.form.get('zipcode')
+    gear_photo = request.form.get('photo')
+    filename = photos.save(request.files['photo'])
+    gear_photo = str(photos.path(filename))
+    gear_photo_url = photos.url(filename)
 
 
-@app.route('/lender/<lender_id>', methods=['POST'])
-def lender_profile_details(lender_id):
-    """Lender can upload equipment"""
-
-    lender = Lender.query.filter_by(lender_id=lender_id).first()
-
+    gear = Equipment(gear_name=gear_name,
+                     category=category,
+                     brand=brand,
+                     lender_id=lender_id,
+                     zipcode=zipcode,
+                     lender_photo=lender_photo,
+                     lender_photo_url=_photo_url)
+    db.session.add(gear)
+    db.session.commit()
     flash('successfully uploaded your gear!')
-
-    camper_id = session.get("camper_id")
-    if camper_id:
-        raise Exception("Hey there, camper! If you want to lend gear out, please log in separately.")
 
     return render_template("lender.html", lender=lender)
 
