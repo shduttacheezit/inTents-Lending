@@ -1,33 +1,40 @@
 var geocoder;
 var map;
+var resultsMap;
 var places;
 var marker;
 var markers = [];
 var address;
-var infoWindow;
+var infoWindows = [];
+var infowindow;
 var equipmentSearchForm;
+var pos;
+var iconBase;
+var image;
 
 function initMap() {
   // evt.preventDefault();
+  var sflatlng = new google.maps.LatLng(37.7749295, -122.4194155);
   var mapOptions = {
-    center: pos,
+    center: sflatlng,
     scrollWheel: false,
-    zoom: 13
+    zoom: 11
+  };
   
   map = new google.maps.Map(document.getElementById("search-map"), mapOptions);
   geocoder = new google.maps.Geocoder();
   infoWindow = new google.maps.InfoWindow;
-
+  iconBase = '../static/images/';
   //HTML5 geolocation for current location
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(function(position) {
-      var pos = {
+      pos = {
       lat: position.coords.latitude,
       lng: position.coords.longitude
       };
 
       infoWindow.setPosition(pos);
-      infoWindow.setContent('Location found.');
+      infoWindow.setContent('Found you!');
       infoWindow.open(map);
       map.setCenter(pos);
       
@@ -35,88 +42,119 @@ function initMap() {
       marker = new google.maps.Marker({
         position: pos,
         map: map,
+        icon: iconBase + 'campfire_sm.png',
         animation: google.maps.Animation.DROP
+        // shape: shape,
+        // title: "Current Location"
       });
       marker.setMap(map);
     });
   }
-  fetchPlaces();
 }
 
-google.maps.event.addDomListener(window, 'load', initMap);
+// google.maps.event.addDomListener(window, 'load', initMap);
 
-$('#search-gear').submit(getSearchResults)
+$('#search-gear').submit(getSearchResults);
 
 function getSearchResults(evt) {
   evt.preventDefault();
   // get values from search form
   equipmentSearchForm = {
-  "gear_name" : $("#gear-name-field").val(),
-  "brand" : $("#brand-type-field").val(),
-  "category" : $("#category-type-field").val(),
-  "zipcode" : $("#pac-input").val()
+    "gear_name" : $("#gear-name-field").val(),
+    "brand" : $("#brand-type-field").val(),
+    "category" : $("#category-type-field").val(),
+    
   }; 
-  console.log("user entered location = " + zip);
+  // zipcode = $("#pac-input").val();
+  // map.center()
+  // console.log("user entered location = " + $("#pac-input").val());
 
-  for (i = 0; i < equipment.length; i++){
-    if ("{{ zipcode }}" === point[i]['zipcode']) {
-      var latitude = point[i]['properties']['latitude']
-      var longitude = point[i]['properties']['longitude'];
-      var latlng = new google.maps.LatLng(latitude, longitude);
-    }
+  $.post('/gear.json', equipmentSearchForm, fetchResults);
+}
 
-    geocoder.geocode( { 'address': zip }, function(results, status) {
-    if (status == google.maps.GeocoderStatus.OK) {
-      // log out results from geocoding
-      console.log("geocoding results");
-      console.log("results");
-
-    // reposition map to the first returned location
-    map.setCenter(results[0].geometry.location);
-
-    // put marker on map
-    marker = new google.maps.Marker({
-    map: map,
-    position: results[0].geometry.location
-    });
+function fetchResults(equipment) {
+  console.log(equipment);
+  // debugger
+  // console.log('got to fetchResults');
+  deleteMarkers();
+  for (var i = 0; i < equipment.length; i++){
+    // debugger
+    console.log(i);
+    var e = equipment[i];
+    geocodeAddress(e);
+  }
+}
+function geocodeAddress(gear) {
+  resultsMap = map;
+  // console.log(map);
+  // console.log("gear:");
+  // console.log(gear);
+  iconBase = '../static/images/';
+  var latlng;
+  geocoder.geocode({'address': String(gear.zipcode)}, function(results, status) {
+    if (status === 'OK') {  
+      // console.log("result ")  
+      // console.log(results)    
+      resultsMap.setCenter(results[0].geometry.location);
+      latlng = results[0].geometry.location;
+      // console.log(results[0].geometry.location);
+      // .gear_id, String(equipment[i].zipcode), equipment[i].gear_name, equipment[i].gear_photo_url, equipment[i].category, equipment[i].brand, equipment[i].lender_email)
+      createMarkers(latlng, gear.gear_id, gear.zipcode, gear.gear_name, gear.gear_photo_url, gear.category, gear.brand, gear.lender_email)
     } else {
       alert('Geocode was not successful for the following reason: ' + status);
     }
+  });
+  // return latlng;
+}
+
+function createMarkers(position, gear_id, zip, gear_name, photo, category, brand, lender_email) {
+  // console.log(resultsMap);
+  // console.log(position);
+  marker = new google.maps.Marker({
+    map: resultsMap,
+    position: position,
+    icon: iconBase + 'tent_sm.png'
+
+  });
+  markers.push(marker);
+  console.log("it is creating")
+
+  var gearhtml = '<div id="content">'+
+                  '<div id="siteNotice">'+
+                  '</div>'+
+                  '<h1 id="firstHeading" class="firstHeading">' + gear_name + '</h1>'+
+                  '<div id="bodyContent">'+
+                  '<img src="' + photo + '" width="250" height="250"/>' +
+                  '<p>Available in ' + zip +'</p>'+
+                  '<p>Category: '+category +'</p>' +
+                  '<p>Brand: ' + brand +'</p>' +
+                  '<p>Email Lender: ' + lender_email +'</p>' +
+                  '<p><a href="/equipment_details/'+gear_id+'">'+
+                  '<b>Borrow Me!</b></a></p>'+
+                  '</div>'+
+                  '</div>';
+  marker.content = gearhtml;
+  infoWindow = new google.maps.InfoWindow({
+    position: position
+  });
+  infoWindows.push(infoWindow);
+
+  (function (marker, gearhtml) {
+    google.maps.event.addListener(marker, 'click', function(e) {
+      infoWindow.setContent(gearhtml);
+      infoWindow.open(resultsMap, marker);
     });
-  // preparing data for form posting
-  var lat = results[0].geometry.location.lat();
-  var lng = results[0].geometry.location.lng();
-  var loc_name = results[0].formatted_address;
+  }) (marker, gearhtml);
+}
+function setMapOnAll(map) {
+  for (var i = 0; i < markers.length; i++) {
+    markers[i].setMap(map);
   }
 }
-
-var fetchPlaces = function() {
-  infowindow = new google.maps.InfoWindow({
-  content: ''
-});
-
-  $.post('/camper/<camper_id>', equipment, function(response) {
-    if (response.status == 'OK') {
-      places = response.places;
-      // loop through places and add markers
-      for (p in places) {
-        //create gmap latlng obj
-        tmpLatLng = new google.maps.LatLng( places[p].geo[0], places[p].geo[1]);
-        // make and place map maker.
-        marker = new google.maps.Marker({
-          map: map,
-          position: tmpLatLng,
-          title : places[p].name + "<br>" + places[p].geo_name
-          });
-        bindInfoWindow(marker, map, infowindow, '<b>'+places[p].name + "</b><br>" + places[p].geo_name);
-        // not currently used but good to keep track of markers
-        markers.push(marker);
-      }
-    }
-  });
+function deleteMarkers() {
+  (function () {
+    setMapOnAll(null);
+  })();
+  markers = [];
 }
-$.post('/gear.json', equipmentSearchForm, function(results) {
-  console.log(results);
-});
-
 

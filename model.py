@@ -7,8 +7,7 @@ class Lender(db.Model):
 
     __tablename__ = "lenders"
 
-    lender_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    email = db.Column(db.String(255), nullable=False)
+    lender_email = db.Column(db.String(255), nullable=False, primary_key=True)
     password = db.Column(db.String(64), nullable=False)
     first_name = db.Column(db.String(64), nullable=False)
     last_name = db.Column(db.String(64), nullable=False)
@@ -22,8 +21,7 @@ class Camper(db.Model):
 
     __tablename__ = "campers"
 
-    camper_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    email = db.Column(db.String(255), nullable=False)
+    camper_email = db.Column(db.String(255), nullable=False, primary_key=True)
     password = db.Column(db.String(64), nullable=False)
     first_name = db.Column(db.String(64), nullable=False)
     last_name = db.Column(db.String(64), nullable=False)
@@ -40,7 +38,7 @@ class Equipment(db.Model):
     gear_name = db.Column(db.String(255), nullable=False)
     category = db.Column(db.String(64), nullable=False)
     brand = db.Column(db.String(64), nullable=False)
-    lender_id = db.Column(db.Integer, db.ForeignKey('lenders.lender_id'), nullable=False)
+    lender_email = db.Column(db.String, db.ForeignKey('lenders.lender_email'), nullable=False)
     zipcode = db.Column(db.Integer, nullable=False)
     gear_photo = db.Column(db.String(255), nullable=False)
     gear_photo_url = db.Column(db.String(255), nullable=False)
@@ -52,8 +50,8 @@ class RentedOut(db.Model):
     __tablename__ = "rentedout"
 
     rented_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    lender_id = db.Column(db.Integer, db.ForeignKey('lenders.lender_id'), nullable=False)
-    camper_id = db.Column(db.Integer, db.ForeignKey('campers.camper_id'), nullable=False)
+    lender_email = db.Column(db.String, db.ForeignKey('lenders.lender_email'), nullable=False)
+    camper_email = db.Column(db.String, db.ForeignKey('campers.camper_email'), nullable=False)
     start_date = db.Column(db.DateTime, nullable=False)
     end_date = db.Column(db.DateTime, nullable=False)
 

@@ -18,7 +18,7 @@
   <ul>
     <li class="logo"><a href="/"><img src="/static/images/intentslogo.png" width="250" height="250"></a></li>
     <li class="item"><a href="/registration"><h4>Register Here!</h4></a></li>
-    <li class="item">{% if "camper_id" in session or "lender_id" in session %}
+    <li class="item">{% if "camper_email" in session or "lender_email" in session %}
           <a href="/logout"><h4>Logout</h4></a>
         {% else %}
           <a href="/login"><h4>Login</h4></a>
@@ -118,7 +118,7 @@ h1,h2 {
   font-family: 'Josefin Slab';
   letter-spacing: 2px;
 }
-#showmequip {
+#showmequip, #pac-input {
   font-family: 'Josefin Slab';
   letter-spacing: 2px;
 }

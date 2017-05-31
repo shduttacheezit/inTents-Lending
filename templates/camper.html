@@ -3,9 +3,8 @@
 {% endblock %}
 {% block content %}
 
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBkVKbb87Oi9ZZlYaOS9qiot9fjD98Ezkc&callback=initMap&libraries=places"
-     async defer></script>
-     
+
+
 <div class="container-mdlg">
 <h1>Camper Dashboard</h1>
   <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
@@ -87,6 +86,11 @@
     }
   </style>
 
+  <div class="profilepic">
+    <img src="{{ camper.camper_photo_url }}" width="200" height="150">
+  </div>
+
+
   <div>
     <form id="search-gear">
       <h2>Search Equipment</h2>
@@ -99,6 +103,7 @@
     <div class="search-gear">
       <label>Brand
         <select id="brand-type-field" name="brand_type" class="form-control">
+          <option>All Brands</option>
           <option>Big Agnes</option>
           <option>Black Diamond</option>
           <option>CamelBak</option>
@@ -124,8 +129,9 @@
     <div class="search-gear">
       <label>Category
         <select id="category-type-field" name="category_type" class="form-control">
+          <option>All Categories</option>
           <option>Backpacks & Bags</option>
-          <option>Camp Electronics</option>
+          <option>Camp Bedding</option>
           <option>Camp Furniture</option>
           <option>Camp Kitchen</option>
           <option>Camp Lighting</option>
@@ -139,10 +145,16 @@
     </div>
 
     <div class="search-gear">
-      <button type="submit" id="search-gear" class="btn btn-primary">Search</button>
+      <br><input id="pac-input" class="controls" type="text" placeholder="Zip Code"><br><br>
+    </div>
+
+    <div class="search-gear">
+      <button type="submit" id="search-gear" class="btn btn-primary">Search</button><br><br>
     </div>
     </form>
   </div>
+
+  <div id="search-map"></div>
 
   <div id="search-results-list">
     <div id="search-results-list-gear">
@@ -151,13 +163,11 @@
     </div>
   </div>
 
+  <script src="../static/js/camper.js" type="text/javascript"></script> 
 
-  <input id="pac-input" class="controls" type="text" placeholder="Search Box">
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBkVKbb87Oi9ZZlYaOS9qiot9fjD98Ezkc&callback=initMap"></script>
 
-  <div id="search-map"></div>
-
-  <script src="../static/js/camper.js" type="text/javascript">
-  </script> 
+  
 
 
 {% endblock %}

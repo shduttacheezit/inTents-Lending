@@ -7,14 +7,17 @@
 <section class="container-mdlg">
 <h1>Lender Dashboard</h1>
 <div class="container-medium">
-<form action="/lender/<lender_id>" method="POST" enctype="multipart/form-data" class="upload">
+  <div class="profilepic">
+    <img src="{{ lender.lender_photo_url }}" width="200" height="150">
+  </div>
+<form action="/lender/{{ lender.lender_email }}" method="POST" enctype="multipart/form-data" class="upload">
     <div>
       Upload Equipment! <br>
       <label>
         Category:
             <select id="category-type-field" name="category_type" class="form-control" required>
               <option>Backpacks & Bags</option>
-              <option>Camp Electronics</option>
+              <option>Camp Bedding</option>
               <option>Camp Furniture</option>
               <option>Camp Kitchen</option>
               <option>Camp Lighting</option>
@@ -79,7 +82,7 @@
   </form>
   <br>
   <div class="container-medium2">
-    <form action='/equipment/{{ lender.lender_id }}'>
+    <form action='/equipment/{{ lender.lender_email }}'>
       <input type="submit" value="Check out your equipment" id="showmequip"/>
     </form> 
   </div>
