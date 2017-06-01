@@ -32,6 +32,7 @@ function initMap() {
       lat: position.coords.latitude,
       lng: position.coords.longitude
       };
+      // console.log(pos);
 
       infoWindow.setPosition(pos);
       infoWindow.setContent('Found you!');
@@ -73,7 +74,7 @@ function getSearchResults(evt) {
 }
 
 function fetchResults(equipment) {
-  console.log(equipment);
+  // console.log(equipment);
   // debugger
   // console.log('got to fetchResults');
   deleteMarkers();
@@ -100,9 +101,10 @@ function geocodeAddress(gear) {
       // console.log(results[0].geometry.location);
       // .gear_id, String(equipment[i].zipcode), equipment[i].gear_name, equipment[i].gear_photo_url, equipment[i].category, equipment[i].brand, equipment[i].lender_email)
       createMarkers(latlng, gear.gear_id, gear.zipcode, gear.gear_name, gear.gear_photo_url, gear.category, gear.brand, gear.lender_email)
-    } else {
-      alert('Geocode was not successful for the following reason: ' + status);
     }
+    // } else {
+    //   alert('Geocode was not successful for the following reason: ' + status);
+    // }
   });
   // return latlng;
 }
@@ -130,7 +132,7 @@ function createMarkers(position, gear_id, zip, gear_name, photo, category, brand
                   '<p>Brand: ' + brand +'</p>' +
                   '<p>Email Lender: ' + lender_email +'</p>' +
                   '<p><a href="/equipment_details/'+gear_id+'">'+
-                  '<b>Borrow Me!</b></a></p>'+
+                  '<b><h3>Borrow Me!</h3></b></a></p>'+
                   '</div>'+
                   '</div>';
   marker.content = gearhtml;

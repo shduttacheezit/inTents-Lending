@@ -42,6 +42,7 @@ class Equipment(db.Model):
     zipcode = db.Column(db.Integer, nullable=False)
     gear_photo = db.Column(db.String(255), nullable=False)
     gear_photo_url = db.Column(db.String(255), nullable=False)
+    available = db.Column(db.Boolean, unique=False, nullable=False, default=True)
 
     lender = db.relationship("Lender")
 
@@ -50,6 +51,7 @@ class RentedOut(db.Model):
     __tablename__ = "rentedout"
 
     rented_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    gear_id = db.Column(db.Integer, db.ForeignKey('equipment.gear_id'), nullable=False)
     lender_email = db.Column(db.String, db.ForeignKey('lenders.lender_email'), nullable=False)
     camper_email = db.Column(db.String, db.ForeignKey('campers.camper_email'), nullable=False)
     start_date = db.Column(db.DateTime, nullable=False)
@@ -57,6 +59,7 @@ class RentedOut(db.Model):
 
     camper = db.relationship("Camper")
     lender = db.relationship("Lender")
+    gear = db.relationship("Equipment")
 
 def connect_to_db(app):
     """Connect the database to our Flask app."""

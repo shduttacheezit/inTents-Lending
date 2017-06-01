@@ -13,7 +13,7 @@ def load_campers():
         email, password, first_name, last_name, camper_photo, camper_photo_url  = row.split(",")
 
         camper = Camper(
-                    email=email,
+                    camper_email=email,
                     password=password,
                     first_name=first_name,
                     last_name=last_name,
@@ -32,7 +32,7 @@ def load_lenders():
         email, password, first_name, last_name, lender_photo, lender_photo_url  = row.split(",")
 
         lender = Lender(
-                 email=email,
+                 lender_email=email,
                  password=password,
                  first_name=first_name,
                  last_name=last_name,
@@ -49,7 +49,7 @@ def load_equipment():
     for row in open("static/equipment.csv"):
         row = row.rstrip()
               
-        gear_name, category, brand, lender_email, zipcode, gear_photo, gear_photo_url,  = row.split(",")
+        gear_name, category, brand, lender_email, zipcode, gear_photo, gear_photo_url  = row.split(",")
 
         equipment = Equipment(
                     gear_name=gear_name,

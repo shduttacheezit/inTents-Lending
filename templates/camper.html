@@ -12,77 +12,78 @@
   
   <style>
     #search-map {
-    height: 100%;
-    }
-    #description {
-    font-family: Raleway;
-    font-size: 15px;
-    font-weight: 300;
+      height: 100%;
     }
 
     #infowindow-content .title {
-    font-weight: bold;
+      font-weight: bold;
     }
 
     #infowindow-content {
-    display: none;
+      display: none;
     }
 
     #search-map #infowindow-content {
-    display: inline;
+      display: inline;
     }
 
     .pac-card {
-    margin: 10px 10px 0 0;
-    border-radius: 2px 0 0 2px;
-    box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    outline: none;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-    background-color: #fff;
-    font-family: Roboto;
+      margin: 10px 10px 0 0;
+      border-radius: 2px 0 0 2px;
+      box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      outline: none;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+      background-color: #fff;
+      font-family: Roboto;
     }
 
     #pac-container {
-    padding-bottom: 12px;
-    margin-right: 12px;
+      padding-bottom: 12px;
+      margin-right: 12px;
     }
 
     .pac-controls {
-    display: inline-block;
-    padding: 5px 11px;
+      display: inline-block;
+      padding: 5px 11px;
     }
 
     .pac-controls label {
-    font-family: Roboto;
-    font-size: 13px;
-    font-weight: 300;
+      font-family: Roboto;
+      font-size: 13px;
+      font-weight: 300;
+    }
+
+    .search-gear {
+      font-family: 'La Belle Aurore';
+      font-size: 18px;
+      letter-spacing: 2px;
     }
 
     #pac-input {
-    background-color: #fff;
-    font-family: 'Raleway';
-    font-size: 15px;
-    font-weight: 300;
-    margin-left: 12px;
-    padding: 0 11px 0 13px;
-    overflow: ellipsis;
-    width: 400px;
+      background-color: #fff;
+      font-family: 'La Belle Aurore';
+      font-size: 18px;
+      font-weight: 300;
+      margin-left: 10px;
+      padding: 0 11px 0 13px;
+      overflow: ellipsis;
+      width: 400px;
     }
 
     #pac-input:focus {
-    border-color: #4d90fe;
+      border-color: #4d90fe;
     }
 
-/*    #title {
+    #title {
     color: #fff;
     background-color: #4d90fe;
     font-size: 25px;
     font-weight: 500;
     padding: 6px 12px;
-    }*/
+    }
     #target {
-    width: 345px;
+      width: 345px;
     }
   </style>
 
@@ -92,7 +93,7 @@
 
 
   <div>
-    <form id="search-gear">
+    <form id="search-gear" >
       <h2>Search Equipment</h2>
     <div class="search-gear">
       <label>Gear keyword
@@ -158,8 +159,6 @@
 
   <div id="search-results-list">
     <div id="search-results-list-gear">
-      <div class="gear-basics">
-      </div>
     </div>
   </div>
 

@@ -6,15 +6,26 @@
 
 
 <div class="container-mdlg">
+  <h1>{{ gear.gear_name }}</h1>
+  <div class="gear-basics">
+    <br><a href="{{ gear.gear_photo_url }}"><img src="{{ gear.gear_photo_url }}" width="200" height="150"></a>
+    <h3 id="gear-brand">Brand: {{ gear.brand }}</h3>
+    <h3 id="gear-category">Category: {{ gear.category }}</h3>
+    <h3 id="lender-email">Contact Info: {{ gear.lender_email }}</h3>
+    <form id="rent-form">
+      <input id="gear_id" type="text" value="{{gear.gear_id }}" name="gear_id">
+      <input id="gear_name" type="text" value="{{ gear.gear_name }}" name="gear_name">
+      <input id="lender_email" type="text" value="{{ gear.lender_email }}" name="lender_email">
+      <h3>Start Date: <input type="date" name="start-date" id="start-date"></h3>
+      <h3>End Date: <input type="date" name="end-date" id="end-date"></h3>
+      <h3><button type="submit" id="rent-btn">Add to your trip!</button></h3>
+    </form>
 
-<h1>{{ gear.gear_name }}</h1>
-
-
-<br><img src="{{ gear.gear_photo_url }}" width="200" height="150">
+  </div>
 
 </div>
 
-{% endblock %}
 
-{% block javascript %}
+<script src="../static/js/gear_details.js" type="text/javascript"></script> 
+
 {% endblock %}

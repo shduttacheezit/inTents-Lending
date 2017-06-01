@@ -167,7 +167,7 @@ def dashboard():
 
 @app.route('/camper/<camper_email>', methods=['GET'])
 def camper_dashboard(camper_email):
-    """Camper can search through available gear"""
+    """Camper can search through geolocation"""
 
     camper = Camper.query.filter_by(camper_email=camper_email).first()
 
@@ -179,24 +179,24 @@ def camper_dashboard(camper_email):
 
 @app.route('/gear.json', methods=['POST'])
 def search_gear():
-    """Camper can search through equipment available"""
+    """Camper can pick desired gear"""
 
     gear_keyword = request.form.get("gear_name")
     category = request.form.get("category")
     brand = request.form.get("brand")
     # zipcode = request.form.get("zipcode")
     if category == "All Categories" and brand == "All Brands":
-        equipSearch = Equipment.query.filter(Equipment.gear_name.contains(gear_keyword)).all()
+        equipSearch = Equipment.query.filter(Equipment.gear_name.contains(gear_keyword), Equipment.available.is_(True)).all()
     elif category != "All Categories" and brand == "All Brands":
-        equipSearch = Equipment.query.filter(Equipment.category == category, Equipment.gear_name.contains(gear_keyword)).all()
+        equipSearch = Equipment.query.filter(Equipment.category == category, Equipment.gear_name.contains(gear_keyword), Equipment.available.is_(True)).all()
     elif category == "All Categories" and brand != "All Brands":
-        equipSearch = Equipment.query.filter(Equipment.brand == brand, Equipment.gear_name.contains(gear_keyword)).all()
+        equipSearch = Equipment.query.filter(Equipment.brand == brand, Equipment.gear_name.contains(gear_keyword), Equipment.available.is_(True)).all()
     else:
-        equipSearch = Equipment.query.filter(Equipment.category == category, Equipment.brand == brand, Equipment.gear_name.contains(gear_keyword)).all()
+        equipSearch = Equipment.query.filter(Equipment.category == category, Equipment.brand == brand, Equipment.gear_name.contains(gear_keyword), Equipment.available.is_(True)).all()
 
     equipment = []
 
-    print equipSearch
+    # print equipSearch
 
     for e in equipSearch:
         d = {
@@ -213,7 +213,7 @@ def search_gear():
     return jsonify(equipment)
 
 @app.route('/lender/<lender_email>', methods=['GET', 'POST'])
-def lender_profile(lender_email):
+def lender_dashboard(lender_email):
     """Lender profile to view their posted gear and upload equipment"""
 
     lender = Lender.query.filter_by(lender_email=lender_email).first()
@@ -244,13 +244,13 @@ def lender_profile(lender_email):
                          gear_photo_url=gear_photo_url)
         db.session.add(gear)
         db.session.commit()
-        flash('successfully uploaded your gear!')
+        flash('You successfully uploaded your gear!')
 
         return redirect("/equipment/%s"%lender.lender_email)
 
 @app.route('/equipment/<lender_email>', methods=['GET'])
 def lender_equipment(lender_email):
-    """Display lender's equipment"""
+    """Lender can see their equipment"""
 
     equipment = Equipment.query.filter_by(lender_email=lender_email).all()
 
@@ -262,15 +262,72 @@ def lender_equipment(lender_email):
     return render_template("equipment.html", lender_email=lender_email, equipment=equipment)
 
 @app.route('/equipment_details/<gear_id>', methods=['GET'])
-def equipment_details(gear_id):
-    """Display gear details"""
+def camper_renting(gear_id):
+    """Display gear details to camper"""
 
     gear = Equipment.query.filter_by(gear_id=gear_id).first()
 
-
-
-
+    # if request.method == 'GET':
     return render_template("gear_details.html", gear=gear)
+    # else:
+        # camper_email = session.get("camper_email")
+        # lender_email = gear.lender_email
+
+        # gear = Equipment.query.filter(Equipment.gear_id == gear_id).one()
+        # gear.available = False
+        # db.session.add(gear)
+        # rental = RentedOut(lender_email=lender_email,
+        #                    camper_email=camper_email,
+        #                    start_date=start_date,
+        #                    end_date=end_date)
+        # db.session.add(rental)
+        # db.session.commit()
+        # flash('You are all set for your trip!')
+
+@app.route('/renting.json', methods=['POST'])
+def rent_gear():
+    """Camper can rent gear from start to end date """
+
+    gear_id = request.form.get("gear_id")
+    gear_name = request.form.get("gear_name")
+    lender_email = request.form.get("lender_email")
+    start_date = request.form.get("start_date")
+    end_date = request.form.get("end_date")
+
+    gear = Equipment.query.filter(Equipment.gear_id == int(gear_id)).one()
+    camper_email = session.get("camper_email")
+    lender_email = gear.lender_email
+    gear.available = False
+    db.session.add(gear)
+    rental = RentedOut(lender_email=lender_email,
+                       camper_email=camper_email,
+                       start_date=start_date,
+                       end_date=end_date)
+    db.session.add(rental)
+    db.session.commit()
+    flash('You are all set for your trip!')
+
+    renting = {}
+    renting['gear_id'] = gear_id
+    renting['gear_name'] = gear_name
+    renting['lender_email'] = lender_email
+    renting['start_date'] = start_date
+    renting['end_date'] = end_date
+
+    return jsonify(renting)
+
+@app.route('/equipment_details/<gear_id>/rented', methods=['POST'])
+def rented():
+
+    camper_email = session.get("camper_email")
+
+    
+    # rental = RentedOut(lender_email=lender_email,
+    #                    camper_email=camper_email,
+    #                    start_date=start_date,
+    #                    end_date=end_date)
+    # db.session.add(rental)
+    # db.session.commit()
 
 
 
