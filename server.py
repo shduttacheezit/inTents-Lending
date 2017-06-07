@@ -4,6 +4,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 from flask_uploads import UploadSet, configure_uploads, IMAGES, patch_request_class
 
 from model import connect_to_db, db, Lender, Camper, Equipment, RentedOut
+from sqlalchemy.orm import joinedload
 from datetime import datetime
 import collections
 
@@ -32,8 +33,18 @@ patch_request_class(app)
 def index():
     """Homepage."""
 
+    lender_email = session.get("lender_email")
+    camper_email = session.get("camper_email")
 
-    return render_template("homepage.html")
+    if lender_email:
+        equipment = Equipment.query.filter_by(lender_email=lender_email).all()
+        return render_template("homepage.html", equipment=equipment)
+    elif camper_email:
+        camper = Camper.query.filter_by(camper_email=camper_email).one()
+        rentals = db.session.query(RentedOut).options(joinedload(RentedOut.gear)).filter(RentedOut.camper_email == camper_email).all()
+        return render_template("homepage.html", rentals=rentals)
+    else:
+        return render_template("homepage.html")
 
 @app.route('/registration', methods=['GET'])
 def registration_form():
@@ -143,7 +154,7 @@ def logout():
 
     if session.get('camper_email') != None:
         del session['camper_email']
-    if session.get('lender_email') != None:
+    elif session.get('lender_email') != None:
         del session['lender_email']
 
     flash('Logged out.')
@@ -248,10 +259,11 @@ def lender_dashboard(lender_email):
 
         return redirect("/equipment/%s"%lender.lender_email)
 
-@app.route('/equipment/<lender_email>', methods=['GET'])
-def lender_equipment(lender_email):
+@app.route('/equipment', methods=['GET'])
+def lender_equipment():
     """Lender can see their equipment"""
 
+    lender_email = session.get("lender_email")
     equipment = Equipment.query.filter_by(lender_email=lender_email).all()
 
     camper_email = session.get("camper_email")
@@ -259,30 +271,40 @@ def lender_equipment(lender_email):
         raise Exception("Hey there, camper! If you want to lend gear out, please log in separately.")
 
 
-    return render_template("equipment.html", lender_email=lender_email, equipment=equipment)
+    return render_template("equipment.html", equipment=equipment)
 
-@app.route('/equipment_details/<gear_id>', methods=['GET'])
+@app.route('/equipment_details/<gear_id>', methods=['GET', 'POST'])
 def camper_renting(gear_id):
     """Display gear details to camper"""
 
     gear = Equipment.query.filter_by(gear_id=gear_id).first()
+    camper_email = session.get("camper_email")
+    camper = Camper.query.filter_by(camper_email=camper_email).one()
+    rentals = db.session.query(RentedOut).options(joinedload(RentedOut.gear)).filter(RentedOut.camper_email == camper_email).all()
 
-    # if request.method == 'GET':
-    return render_template("gear_details.html", gear=gear)
-    # else:
-        # camper_email = session.get("camper_email")
-        # lender_email = gear.lender_email
+    return render_template("gear_details.html", gear=gear, rentals=rentals, camper=camper)
+def rented():
+    """Show camper rented gear and allow to return"""
 
-        # gear = Equipment.query.filter(Equipment.gear_id == gear_id).one()
-        # gear.available = False
-        # db.session.add(gear)
-        # rental = RentedOut(lender_email=lender_email,
-        #                    camper_email=camper_email,
-        #                    start_date=start_date,
-        #                    end_date=end_date)
-        # db.session.add(rental)
-        # db.session.commit()
-        # flash('You are all set for your trip!')
+    camper_email = session.get("camper_email")
+    camper = Camper.query.filter_by(camper_email=camper_email).one()
+    rentals = db.session.query(RentedOut).options(joinedload(RentedOut.gear)).filter(RentedOut.camper_email == camper_email).all()
+
+    if request.method == 'GET':
+        return render_template("camper_rentals.html", rentals=rentals, camper=camper)
+    else:
+        gear_id = request.form.get("gear_id")
+        gear = RentedOut.query.filter(RentedOut.gear_id == gear_id).one()
+
+        db.session.delete(gear)
+
+        equipment = Equipment.query.filter(Equipment.gear_id == gear_id).one()
+        equipment.available = True
+        db.session.add(equipment)
+        db.session.commit()
+        return "Thanks for confirming that you've returned your gear!"
+        redirect('/equipment_details/gear_id')
+
 
 @app.route('/renting.json', methods=['POST'])
 def rent_gear():
@@ -299,7 +321,8 @@ def rent_gear():
     lender_email = gear.lender_email
     gear.available = False
     db.session.add(gear)
-    rental = RentedOut(lender_email=lender_email,
+    rental = RentedOut(gear_id=gear_id,
+                       lender_email=lender_email,
                        camper_email=camper_email,
                        start_date=start_date,
                        end_date=end_date)
@@ -316,20 +339,29 @@ def rent_gear():
 
     return jsonify(renting)
 
-@app.route('/equipment_details/<gear_id>/rented', methods=['POST'])
+@app.route('/rentals', methods=['GET', 'POST'])
 def rented():
+    """Show camper rented gear and allow to return"""
 
     camper_email = session.get("camper_email")
+    camper = Camper.query.filter_by(camper_email=camper_email).one()
+    rentals = db.session.query(RentedOut).options(joinedload(RentedOut.gear)).filter(RentedOut.camper_email == camper_email).all()
 
-    
-    # rental = RentedOut(lender_email=lender_email,
-    #                    camper_email=camper_email,
-    #                    start_date=start_date,
-    #                    end_date=end_date)
-    # db.session.add(rental)
-    # db.session.commit()
+    if request.method == 'GET':
 
+        return render_template("camper_rentals.html", rentals=rentals, camper=camper)
+    else:
+        gear_id = request.form.get("gear_id")
+        gear = RentedOut.query.filter(RentedOut.gear_id == gear_id).one()
 
+        db.session.delete(gear)
+
+        equipment = Equipment.query.filter(Equipment.gear_id == gear_id).one()
+        equipment.available = True
+        db.session.add(equipment)
+        db.session.commit()
+        return "Thanks for confirming that you've returned your gear!"
+        redirect('/rentals')
 
 
 
@@ -343,7 +375,6 @@ if __name__ == "__main__":
 
     # # Use the DebugToolbar
     DebugToolbarExtension(app)
-
 
     
     app.run(port=5000, host='0.0.0.0')

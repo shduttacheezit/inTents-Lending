@@ -4,20 +4,94 @@
 {% block content %}
 
 <div class="container-mdlg">
-  <h1>WELCOME TO INTENTS LENDING</h1>
-  <br><br>
-  <p> Camping expands your mind. The adventurer in us thrives when we spend time outdoors.<br><br>The problem? Camping gear is expensive! And heavy, ooof. But, did you know, that more often than not, gear just sits at home, in a closet, unused?  This is why I've built inTents Lending; to connect campers to lenders who are willing to lend their gear, using convenient pickup and drop off locations based on your geolocation.<br><br>
+  <h1 id="hometitle">WELCOME TO INTENTS LENDING</h1>
+    <div>
+    {% if "camper_email" in session %}
+    <h3> Your Rentals </h3>
+    <div>
+      {% for rental in rentals %}
+        <img class="mySlides" src="http://localhost:5000/{{ rental.gear.gear_photo }}" width="600" height="500">
+        <button class="w3camp-button w3-display-left" onclick="plusDivs(-1)">&#10094;</button>
+        <button class="w3camp-button w3-display-right" onclick="plusDivs(+1)">&#10095;</button>
+      {% endfor %}
+    {% endif %}
+    {% if "lender_email" in session %}
+      <h3>Your Gear</h3>
+        {% for equip in equipment %}
+          <img class="mySlides" src="http://localhost:5000/{{ equip.gear_photo }}" width="600" height="500">
+        {% endfor %}
+        <button class="w3lend-button w3-display-left" onclick="plusDivs(-1)">&#10094;</button>
+        <button class="w3lend-button w3-display-right" onclick="plusDivs(+1)">&#10095;</button>
+    {% endif %}
+    </div>
+    <p> <br>Camping expands your mind. The adventurer in us thrives when we spend time outdoors.<br><br>The problem? Camping gear is expensive! And heavy, ooof. But, did you know, that more often than not, gear just sits at home, in a closet, unused?  This is why I've built inTents Lending; to connect campers to lenders who are willing to lend their gear, using convenient pickup and drop off locations based on your geolocation.<br><br>
     With a commitment to sustainability and the outdoors, inTents Lending wants everyone to seek out the adventure that's out there!<br><br>
   </p>
+  </div>
+  <br>
+
 </div>
 
-<style>
 
+
+<div class="footer">
+</div>
+
+
+<style>
+#hometitle, h3{
+  text-align: center;
+}
 p {
+  margin-left: 20px;
   font-family: 'Shadows Into Light';
   letter-spacing: 2px;
-  font-size: 20px;
+  font-size: 20px;}
+.mySlides {
+  display: block;
+  margin: auto;
 }
+.w3-display-left {
+  position: absolute;
+  top: 40%;
+  left: 25%;
+  color: white;
+  background-color: #000;
+  border: none;
+  font-size: 18px;
+  transform: translate(0%,-50%);
+}
+.w3-display-right {
+  position: absolute;
+  top: 40%;
+  right: 25%;
+  color: white;
+  background-color: #000;
+  border: none;
+  font-size: 18px;
+  transform: translate(0%,-50%);
+}
+
 </style>
+
+<script>
+  var slideIndex = 1;
+  showDivs(slideIndex);
+
+  function plusDivs(n) {
+    showDivs(slideIndex += n);
+  }
+  function showDivs(n) {
+    var i;
+    var x = document.getElementsByClassName("mySlides");
+    if (n > x.length) {slideIndex = 1} 
+    if (n < 1) {slideIndex = x.length} ;
+    for (i = 0; i < x.length; i++) {
+        x[i].style.display = "none"; 
+    }
+    x[slideIndex-1].style.display = "block"; 
+  }
+
+</script>
 
 {% endblock %}

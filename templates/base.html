@@ -3,33 +3,40 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>inTents Lending</title>
-  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.css"/>
+  <title> inTents Lending</title>
   <link rel="stylesheet" href="/static/css/site.css"/>
   <script src="http://code.jquery.com/jquery.js"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-  <link href="https://fonts.googleapis.com/css?family=Amatic+SC|Josefin+Slab|La+Belle+Aurore|Open+Sans+Condensed:300|Oswald|Raleway|Shadows+Into+Light" rel="stylesheet">
-  
-  <div class="menubar">
+  <link href="https://fonts.googleapis.com/css?family=Amatic+SC|La+Belle+Aurore|Shadows+Into+Light" rel="stylesheet">
+<div class="logoline" style="min-height: 200px">
+  <a class="home link" href="/"><img src="/static/images/intentslogo.png" width="250" height="250"></a>
+  <h1 id="prehashtag"> Together, we can</h1> <h1 id="hashtag"> #BridgetheCampGap </h1>
+</div>
+  <div class="nav">
   <ul>
-    <li class="logo"><a href="/"><img src="/static/images/intentslogo.png" width="250" height="250"></a></li>
-    <li class="item"><a href="/registration"><h4>Register Here!</h4></a></li>
-    <li class="item">{% if "camper_email" in session or "lender_email" in session %}
-          <a href="/logout"><h4>Logout</h4></a>
-        {% else %}
-          <a href="/login"><h4>Login</h4></a>
-        {% endif %} </li>
-    <li class="item"><a href="/dashboard"><h4>Your Dashboard</h4></a></li>
+    <li class="home"><a href="/">Home</a></li>
+    <li class="reg"><a href="/registration">Register Here!</a></li>
+    {% if "camper_email" in session or "lender_email" in session %}
+      <li class="lgout"><a href="/logout">Logout</a></li>
+    {% else %} 
+      <li class="lgin"><a href="/login">Login</a></li>
+    {% endif %}
+    <li class="dashboard"><a href="/dashboard">Dashboard</a></li>
+    {% if "camper_email" in session %}
+      <li class="search"><a href="/dashboard">Search Gear</a></li>
+    {% endif %}
+    {% if "camper_email" in session %}
+      <li class="gear"><a href="/rentals">Your Gear</a></li>
+    {% elif "lender_email" in session %}
+      <li class="equipment"><a href="/equipment">Your Equipment</a></li>
+    {% endif %}
   </ul>
   </div>
-</head>
-{% block body %} 
 
-{% endblock %}
+</head>
 
 <body>
-  <div class="container-large">
-  </div>
+{% block body %} 
 
 {% with messages = get_flashed_messages() %}
   {% if messages %}
@@ -42,91 +49,37 @@
   {% endif %}
 {% endwith %}
 
+{% endblock %}
+
 {% block content %}
       <!-- content goes here  -->
 {% endblock %}
-
-<style > 
+<style>
+#prehashtag {
+    margin-top: -150px;
+    margin-left: 275px;
+    padding-top: 10px;
+    color: beige;
+    font-family: 'La Belle Aurore';
+}
+#hashtag {
+    margin-top: -110px;
+    margin-left: 587px;
+    padding-top: 10px;
+    color: beige;
+}
 body {
-  margin: 10;
-  background-color: white;
-  padding: 25px;
+  background-image: url(../static/images/gear/background.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center; 
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  padding: 0px;
+  overflow: visible;
 }
-.menubar {
-  width: 100%;
-  height:25%;
-}
-ul {
-  display: block;
-  margin: 0;
-  padding: 0;
-}
-li {
-  float: left;
-  display: inline;
-  padding: 10px;
-}
-li.item a {
-  display: inline;
-  text-align: center;
-  font-family: 'Shadows Into Light';
-  color: #112E05;
-  padding: 25px 30px;
-}
-li.item a:hover {
-  color: #effce8;
-}
-
-.container-large {
-  width: 800px;
-  height:600px;
-
-}
-.container-medium {
-  width:400px;
-  height: 600px;
-  position: absolute;
-  top: 5em;
-}
-.container-medium2 {
-  width:400px;
-  height: 600px;
-  position: absolute;
-  top: 25em;
-  left:5em;
-}
-.container-mdlg {
-  width: 860px;
-  height: 600px;
-  position: absolute;
-  margin-top: -25%;
-  margin-left: 10em;
-  margin-right: 10em;
-}
-h1,h2 {
-  font-family: 'Amatic SC';
-  letter-spacing: 2px;
-}
-h3 {
-  font-family: 'La Belle Aurore';
-}
-.registration {
-  font-family: 'Josefin Slab';
-  letter-spacing: 2px;
-}
-.login {
-  font-family: 'Josefin Slab';
-  letter-spacing: 2px;
-}
-.upload {
-  font-family: 'Josefin Slab';
-  letter-spacing: 2px;
-}
-#showmequip, {
-  font-family: 'La Belle Aurore';
-  letter-spacing: 2px;
-}
-
 </style>
 
 </body>

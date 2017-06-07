@@ -68,7 +68,7 @@ function getSearchResults(evt) {
   }; 
   // zipcode = $("#pac-input").val();
   // map.center()
-  // console.log("user entered location = " + $("#pac-input").val());
+  console.log("user entered location = " + $("#pac-input").val());
 
   $.post('/gear.json', equipmentSearchForm, fetchResults);
 }
@@ -126,11 +126,11 @@ function createMarkers(position, gear_id, zip, gear_name, photo, category, brand
                   '</div>'+
                   '<h1 id="firstHeading" class="firstHeading">' + gear_name + '</h1>'+
                   '<div id="bodyContent">'+
-                  '<img src="' + photo + '" width="250" height="250"/>' +
-                  '<p>Available in ' + zip +'</p>'+
-                  '<p>Category: '+category +'</p>' +
-                  '<p>Brand: ' + brand +'</p>' +
-                  '<p>Email Lender: ' + lender_email +'</p>' +
+                  '<img src="' + photo + '" width="150" height="150"/>' +
+                  '<p><b>Available</b> in ' + zip +'</p>'+
+                  '<p><b>Category: </b> '+category +'</p>' +
+                  '<p><b>Brand:</b> ' + brand +'</p>' +
+                  '<p><b>Email Lender: </b>' + lender_email +'</p>' +
                   '<p><a href="/equipment_details/'+gear_id+'">'+
                   '<b><h3>Borrow Me!</h3></b></a></p>'+
                   '</div>'+

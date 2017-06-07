@@ -6,25 +6,100 @@
 
 
 <div class="container-mdlg">
-  <h1>{{ gear.gear_name }}</h1>
+  <h1 id="gearrenttitle">{{ gear.gear_name }}</h1>
   <div class="gear-basics">
-    <br><a href="{{ gear.gear_photo_url }}"><img src="{{ gear.gear_photo_url }}" width="200" height="150"></a>
+    <br><a href="{{ gear.gear_photo_url }}"><img src="{{ gear.gear_photo_url }}" id="gearpic" width="200" height="150"></a>
     <h3 id="gear-brand">Brand: {{ gear.brand }}</h3>
     <h3 id="gear-category">Category: {{ gear.category }}</h3>
     <h3 id="lender-email">Contact Info: {{ gear.lender_email }}</h3>
     <form id="rent-form">
-      <input id="gear_id" type="text" value="{{gear.gear_id }}" name="gear_id">
-      <input id="gear_name" type="text" value="{{ gear.gear_name }}" name="gear_name">
-      <input id="lender_email" type="text" value="{{ gear.lender_email }}" name="lender_email">
+      <input id="gear_id" type="text" value="{{gear.gear_id }}" name="gear_id" hidden>
+      <input id="gear_name" type="text" value="{{ gear.gear_name }}" name="gear_name" hidden>
+      <input id="lender_email" type="text" value="{{ gear.lender_email }}" name="lender_email" hidden>
       <h3>Start Date: <input type="date" name="start-date" id="start-date"></h3>
       <h3>End Date: <input type="date" name="end-date" id="end-date"></h3>
-      <h3><button type="submit" id="rent-btn">Add to your trip!</button></h3>
+      <h3><button type="submit" class="btn">Add to your trip!</button></h3>
     </form>
+  </div>
+  <div id="viewbtn">
+    <button type="submit" value="View Rented Gear" id="view" class="btn">View All Rented Gear!</button>
+  </div>
 
+  <div class="rentedgear">
+  <h2> Your Gear</h2>
+  <ul>
+  {% for rental in rentals %}
+    <div class="box">
+        <div class="mySlides">
+          <form class="returnform" method="POST">
+          <li><h3>{{ rental.gear.gear_name }}</h3><img src="http://localhost:5000/{{ rental.gear.gear_photo }}" width="602" height="500"></li>
+          <li>{{ rental.start_date.strftime('%B ' '%d, ' '%Y') }} - {{ rental.end_date.strftime('%B ' '%d, ' '%Y') }}</li>
+          <li>Lender Email: {{ rental.lender_email }}</li>
+          <input id="gear_id" type="text" value="{{rental.gear_id }}" name="gear_id" hidden>
+          <input id="gear_name" type="text" value="{{ rental.gear.gear_name }}" name="gear_name" hidden>
+          <input id="lender_email" type="text" value="{{ rental.lender_email }}" name="lender_email" hidden>
+          <input id="start_date" type="date" value="{{ rental.start_date.strftime('%Y-%m-%d') }}" name="start_date" hidden>
+          <input id="end_date" type="date" value="{{ rental.end_date.strftime('%Y-%m-%d') }}" name="end_date" hidden>
+          <li><button type="click" value="Search" class="return btn">Return</button></li><br><br>
+          </form>
+        </div>
+    </div>
+  {% endfor %}
+  <button class="w3camp-button w3-display-left" onclick="plusDivs(-1); return false;">&#10094;</button>
+  <button class="w3camp-button w3-display-right" onclick="plusDivs(+1); return false;">&#10095;</button>
+  </ul>
   </div>
 
 </div>
+<div class="footer">
+  </div>
 
+
+<style>
+#viewbtn {
+  text-align: center;
+}
+.gear-basics {
+  text-align: center;
+}
+#gearrenttitle {
+  text-align: center;
+}
+.rentedgear {
+  display: none;
+  text-align: center;
+}
+
+.rentedgear li {
+  list-style-type: none;
+  font-family: 'La Belle Aurore';
+  font-size: 18px;
+  font-weight: 300;
+}
+.rentedgear ul {
+}
+.w3-display-left {
+  position: absolute;
+  bottom: 26%;
+  left: 23%;
+  color: white;
+  background-color: #000;
+  border: none;
+  font-size: 18px;
+  transform: translate(0%,-50%);
+}
+.w3-display-right {
+  position: absolute;
+  bottom: 26%;
+  right: 21%;
+  color: white;
+  background-color: #000;
+  border: none;
+  font-size: 18px;
+  transform: translate(0%,-50%);
+}
+
+</style>
 
 <script src="../static/js/gear_details.js" type="text/javascript"></script> 
 

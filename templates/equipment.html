@@ -5,18 +5,99 @@
 
 
 
-<div class="container-mdlg">
+<div class="container-large">
 
 <h1>Your Equipment</h1>
 
-
-<ul>
+<div class="equip-images">
     {% for gear in equipment %}
-        <li>{{ gear.gear_name }}<br><a href="http://localhost:5000/{{ gear.gear_photo }}"><img src="http://localhost:5000/{{ gear.gear_photo }}" width="200" height="150"></a></li>
-    {% endfor %}
-</ul>
+  <a id="linkimg" href="http://localhost:5000/{{ gear.gear_photo }}">
+    <figure>
+      <img src="http://localhost:5000/{{ gear.gear_photo }}" id="equipimg" alt="">
+      <figcaption>
+        {{ gear.gear_name }}
+      </figcaption>
+    </figure>
+  </a>
+  {% endfor %}
+</div>
 
 </div>
+<div class="footer">
+</div>
+
+
+<style>
+
+.equip-images {
+  justify-content: space-around;
+  margin: 20px;
+}
+
+a {
+  display: inline-block;
+  margin-bottom: 8px;
+  width: calc(50% - 4px);
+  margin-right: 8px;
+  text-decoration: none;
+  color: black;
+}
+
+a:nth-of-type(2n) {
+  margin-right: 0;
+}
+
+@media screen and (min-width: 50em) {
+  a {
+    width: calc(25% - 6px);
+  }
+  
+  a:nth-of-type(2n) {
+    margin-right: 8px;
+  }
+  
+  a:nth-of-type(4n) {
+    margin-right: 0;
+  }
+}
+
+a:hover img {
+  transform: scale(1.15);
+}
+
+figure {
+  margin: 0;
+  overflow: hidden;
+}
+
+figcaption {
+  margin-top: 18px;
+  font-family: 'La Belle Aurore';
+}
+
+#equipimg {
+  border: none;
+  max-width: 100%;
+  height: auto;
+  display: block;
+  background: #ccc;
+  transition: transform .2s ease-in-out;
+}
+
+.p a {
+  display: inline;
+  font-size: 18px;
+  margin: 0;
+  text-decoration: underline;
+  color: blue;
+}
+
+.p {
+  text-align: center;
+  font-size: 18px;
+  padding-top: 100px;
+}
+</style>
 
 
 {% endblock %}

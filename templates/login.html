@@ -11,8 +11,8 @@
     <div>
         <label>
             Logging in as: 
-            <input type="radio" name="user_type" value="camper" checked>Camper
-            <input type="radio" name="user_type" value="lender"> Lender <br>
+            <input type="radio" name="user_type" value="camper" checked> Camper
+            <input type="radio" name="user_type" value="lender"> Lender<br>
         <label>
             Email: 
             <input type="email" name="email" required>
@@ -26,10 +26,25 @@
     </div>
 
     <div>
-        <input type="submit" value="login" name="login">
+        <input type="submit" value="Login" name="login" class="btn">
     </div>
-</form>
+</form><br>
 </div>
+<div class="footer">
+</div>
+<style>
+
+.login {
+  font-family: 'La Belle Aurore';
+  letter-spacing: 2px;
+  font-size: 20px;
+  margin-left: 20px;
+}
+.footer {
+  height: 180px;
+}
+
+</style>
 
 
 {% endblock %}

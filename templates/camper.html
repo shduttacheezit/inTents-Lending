@@ -3,170 +3,94 @@
 {% endblock %}
 {% block content %}
 
-
-
 <div class="container-mdlg">
-<h1>Camper Dashboard</h1>
+<h1>Hey Camper!</h1>
   <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
   <meta charset="utf-8">
-  
-  <style>
-    #search-map {
-      height: 100%;
-    }
 
-    #infowindow-content .title {
-      font-weight: bold;
-    }
-
-    #infowindow-content {
-      display: none;
-    }
-
-    #search-map #infowindow-content {
-      display: inline;
-    }
-
-    .pac-card {
-      margin: 10px 10px 0 0;
-      border-radius: 2px 0 0 2px;
-      box-sizing: border-box;
-      -moz-box-sizing: border-box;
-      outline: none;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-      background-color: #fff;
-      font-family: Roboto;
-    }
-
-    #pac-container {
-      padding-bottom: 12px;
-      margin-right: 12px;
-    }
-
-    .pac-controls {
-      display: inline-block;
-      padding: 5px 11px;
-    }
-
-    .pac-controls label {
-      font-family: Roboto;
-      font-size: 13px;
-      font-weight: 300;
-    }
-
-    .search-gear {
-      font-family: 'La Belle Aurore';
-      font-size: 18px;
-      letter-spacing: 2px;
-    }
-
-    #pac-input {
-      background-color: #fff;
-      font-family: 'La Belle Aurore';
-      font-size: 18px;
-      font-weight: 300;
-      margin-left: 10px;
-      padding: 0 11px 0 13px;
-      overflow: ellipsis;
-      width: 400px;
-    }
-
-    #pac-input:focus {
-      border-color: #4d90fe;
-    }
-
-    #title {
-    color: #fff;
-    background-color: #4d90fe;
-    font-size: 25px;
-    font-weight: 500;
-    padding: 6px 12px;
-    }
-    #target {
-      width: 345px;
-    }
-  </style>
-
-  <div class="profilepic">
-    <img src="{{ camper.camper_photo_url }}" width="200" height="150">
+  <div id="profilepic">
+    <img src="{{ camper.camper_photo_url }}" width="175" height="200">
   </div>
 
+<div class="search">
+  <div class="gear-search">
+    <h2>Search Equipment</h2>
+    <form id="search-gear">
+      <div>
+        <label id="pac-input">Gear keyword
+          <input class="form-control" type="text" name="gear_keywords" id="gear-name-field">
+        </label>
+      </div>
 
-  <div>
-    <form id="search-gear" >
-      <h2>Search Equipment</h2>
-    <div class="search-gear">
-      <label>Gear keyword
-        <input class="form-control" type="text" name="gear_keywords" id="gear-name-field">
-      </label>
-    </div>
+      <div>
+        <label id="pac-input">Brand
+          <select id="brand-type-field" name="brand_type" class="form-control">
+            <option>All Brands</option>
+            <option>Big Agnes</option>
+            <option>Black Diamond</option>
+            <option>CamelBak</option>
+            <option>Evernew</option>
+            <option>GSI</option>
+            <option>Hydro Flask</option>
+            <option>Marmot</option>
+            <option>Mountain Hardwear</option>
+            <option>MSR</option>
+            <option>Nemo</option>
+            <option>Osprey</option>
+            <option>Patagonia</option>
+            <option>REI</option>
+            <option>Sea to Summit</option>
+            <option>Sierra Designs</option>
+            <option>Snow Peak</option>
+            <option>Terra Nova</option>
+            <option>The North Face</option>
+          </select>
+        </label>
+      </div>
 
-    <div class="search-gear">
-      <label>Brand
-        <select id="brand-type-field" name="brand_type" class="form-control">
-          <option>All Brands</option>
-          <option>Big Agnes</option>
-          <option>Black Diamond</option>
-          <option>CamelBak</option>
-          <option>Evernew</option>
-          <option>GSI</option>
-          <option>Hydro Flask</option>
-          <option>Marmot</option>
-          <option>Mountain Hardwear</option>
-          <option>MSR</option>
-          <option>Nemo</option>
-          <option>Osprey</option>
-          <option>Patagonia</option>
-          <option>REI</option>
-          <option>Sea to Summit</option>
-          <option>Sierra Designs</option>
-          <option>Snow Peak</option>
-          <option>Terra Nova</option>
-          <option>The North Face</option>
-        </select>
-      </label>
-    </div>
+      <div>
+        <label id="pac-input">Category
+          <select id="category-type-field" name="category_type" class="form-control">
+            <option>All Categories</option>
+            <option>Backpacks & Bags</option>
+            <option>Camp Bedding</option>
+            <option>Camp Furniture</option>
+            <option>Camp Kitchen</option>
+            <option>Camp Lighting</option>
+            <option>Camp Electronics</option>
+            <option>Hydration</option>
+            <option>Knives & Tools</option>
+            <option>Sleeping Bags</option>
+            <option>Tents & Shelter</option>
+          </select>
+        </label>
+      </div>
 
-    <div class="search-gear">
-      <label>Category
-        <select id="category-type-field" name="category_type" class="form-control">
-          <option>All Categories</option>
-          <option>Backpacks & Bags</option>
-          <option>Camp Bedding</option>
-          <option>Camp Furniture</option>
-          <option>Camp Kitchen</option>
-          <option>Camp Lighting</option>
-          <option>Camp Electronics</option>
-          <option>Hydration</option>
-          <option>Knives & Tools</option>
-          <option>Sleeping Bags</option>
-          <option>Tents & Shelter</option>
-        </select>
-      </label>
-    </div>
+      <div>
+        <br><input id="pac-input" class="controls" type="text" placeholder="Zip Code"><br><br>
+      </div>
 
-    <div class="search-gear">
-      <br><input id="pac-input" class="controls" type="text" placeholder="Zip Code"><br><br>
-    </div>
-
-    <div class="search-gear">
-      <button type="submit" id="search-gear" class="btn btn-primary">Search</button><br><br>
-    </div>
+      <div>
+        <button type="submit" value="Search" class="btn">Search</button><br><br>
+      </div>
     </form>
   </div>
 
   <div id="search-map"></div>
+</div>
+</div>
 
-  <div id="search-results-list">
-    <div id="search-results-list-gear">
-    </div>
+<div class="footer">
   </div>
-
+<style>
+.gm-style-iw {
+  max-height: 300px !important;
+  max-width: 300px !important;
+  overflow: scroll !important;
+}
+</style>
   <script src="../static/js/camper.js" type="text/javascript"></script> 
 
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBkVKbb87Oi9ZZlYaOS9qiot9fjD98Ezkc&callback=initMap"></script>
-
-  
-
 
 {% endblock %}
