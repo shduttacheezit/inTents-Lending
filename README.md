@@ -1,6 +1,6 @@
 # inTentsLending 1.0
 
-! [alt text](https://github.com/shduttacheezit/inTents-Lending_HackbrightProject/read-me-images/homepage.png?raw=true "Homepage")
+! [](https://github.com/shduttacheezit/inTents-Lending_HackbrightProject/blob/master/read-me-images/homepage.png?raw=true "Homepage")
 
 ### What is inTentsLending?
 inTentsLending is a web application that enables peer-to-peer sharing of camping gear. Lenders may upload their gear they would like to lend out.  Campers may search via their geolocation, brands, categories, keywords, and a different location and borrow desired items for a specific amount of time. This project's goal was to contribute to the information technology world's recent momentum in sharing economy, as collaborative consumption has become a great way to live and consume sustainably.
@@ -20,12 +20,12 @@ __Deployment:__ TBD<br>
 ## <a name="features"></a>Features
 
 From the homepage, the user can either register or login. 
-![alt text](https://github.com/shduttacheezit/inTents-Lending_HackbrightProject/read-me-images/register.png?raw=true "Register")
+![](https://github.com/shduttacheezit/inTents-Lending_HackbrightProject/blob/master/read-me-images/register.png?raw=true "Register")
 The passwords are hashed with bcrypt before they are stored in the database.
-![alt text](https://github.com/shduttacheezit/inTents-Lending_HackbrightProject/read-me-images/login.png?raw=true "Login")
+![](https://github.com/shduttacheezit/inTents-Lending_HackbrightProject/blob/master/read-me-images/login.png?raw=true "Login")
 Once a camper logs in, the camper can see their dashboard, which geolocates the user. From here, the camper can search for gear. The search results will take a gear keyword, brand, category, or a desired zipcode. 
-![alt text](https://github.com/shduttacheezit/inTents-Lending_HackbrightProject/read-me-images/camper_dashboard.png?raw=true "Camper Dashboard")
-![alt text](https://github.com/shduttacheezit/inTents-Lending_HackbrightProject/read-me-images/GoogleMap_infowindow.png?raw=true "Infowindow")
+![](https://github.com/shduttacheezit/inTents-Lending_HackbrightProject/blob/master/read-me-images/camper_dashboard.png?raw=true "Camper Dashboard")
+![](https://github.com/shduttacheezit/inTents-Lending_HackbrightProject/blob/master/read-me-images/GoogleMap_infowindow.png?raw=true "Infowindow")
 
 
 
@@ -36,4 +36,4 @@ In Version 2.0, there will be the ability to sign on using Facebook and GMail, s
 ## <a name="aboutthedeveloper"></a>About the Developer
 Shilpa is a software engineer and Hackbright Academy graduate, with a background in public health and research. inTentsLending is her first fullstack web-application and she enjoyed every bit of it. Learning is a passion, and she is very grateful for the lessons learned through this project. Her favorite part was working with complex queries and developing a strong relational database with SQLAlchemy and PostgreSQL. She enjoyed the ups and downs of creating this application and looks forward to coding more projects. Shilpa is excited to progress in her software engineering career as a fullstack developer, work on more projects, and learn as much as she can. 
 
-[LinkedIn](http://www.linkedin.com/in/shilpadutta).
+[LinkedIn](http://www.linkedin.com/in/shilpadutta)
