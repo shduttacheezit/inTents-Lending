@@ -3,7 +3,7 @@
 ![](https://github.com/shduttacheezit/inTents-Lending_HackbrightProject/blob/master/read-me-images/homepage.png?raw=true "Homepage")
 
 ### What is inTentsLending?
-inTentsLending is a web application that enables peer-to-peer sharing of camping gear. Lenders may upload their gear they would like to lend out.  Campers may search via their geolocation, brands, categories, keywords, and a different location and borrow desired items for a specific amount of time. This project's goal was to contribute to the information technology world's recent momentum in sharing economy, as collaborative consumption has become a great way to live and consume sustainably.
+inTentsLending is a web application that enables peer-to-peer sharing of camping gear. Often, campers, especially avid backpackers, do not have all the gear they need for a trip on their person. All the while, those who own camping gear often have their gear sitting in storage, unused. This project aimed to address that. Lenders may upload the gear they would like to lend out, while campers may search via their geolocation, brands, categories, keywords, and zipcode. Campers borrow desired items for a specific block of dates and confirm their return through the application. With the technology world's recent momentum in sharing economy, this application was inspired by collaborative consumption as a great way to live and consume sustainably, while also enjoying the wonderful outdoors.
 
 ## Table of Contents
 * [Technologies](#technologies)
@@ -26,13 +26,11 @@ The passwords are hashed with bcrypt before they are stored in the database.<br>
 Once a camper logs in, the camper can see their dashboard, which geolocates the user. From here, the camper can search for gear. The search results will take a gear keyword, brand, category, or a desired zipcode. <br>
 ![](https://github.com/shduttacheezit/inTents-Lending_HackbrightProject/blob/master/read-me-images/camper_dashboard.png?raw=true "Camper Dashboard")<br>
 The camper can click on each result icon to get basic info on the gear item in an info window. Underneath the info, there is the link to borrow. <br>
-![](https://github.com/shduttacheezit/inTents-Lending_HackbrightProject/blob/master/read-me-images/GoogleMap_infowindow.png?raw=true "Infowindow")
-![](https://github.com/shduttacheezit/inTents-Lending_HackbrightProject/blob/master/read-me-images/borrow_box.png?raw=true "Borrow")<br>
-The camper inputs the dates they would like to borrow the gear. They can then view their other borrowed gear in carousel, and return from there. <br>
+![](https://github.com/shduttacheezit/inTents-Lending_HackbrightProject/blob/master/read-me-images/GoogleMap_infowindow.png?raw=true "Infowindow")<br>
+The camper inputs the dates they would like to borrow the gear. They can then view their other borrowed gear in a photo carousel, and return from there. <br>
 ![](https://github.com/shduttacheezit/inTents-Lending_HackbrightProject/blob/master/read-me-images/rental_dates.png?raw=true "Rental Dates")
 ![](https://github.com/shduttacheezit/inTents-Lending_HackbrightProject/blob/master/read-me-images/rentals_carousel.png?raw=true "All Rentals")<br>
 The user could also go to the "Your Gear" tab and return their gear from there. <br>
-![](https://github.com/shduttacheezit/inTents-Lending_HackbrightProject/blob/master/read-me-images/return_option.png?raw=true "Return")<br>
 ![](https://github.com/shduttacheezit/inTents-Lending_HackbrightProject/blob/master/read-me-images/return_complete.png?raw=true "Return")<br>
 When the lender logs in, their dashboard consists of an option to upload new equipment, <br>
 ![](https://github.com/shduttacheezit/inTents-Lending_HackbrightProject/blob/master/read-me-images/lender_dashboard.png?raw=true "Lender Dashboard")<br>
