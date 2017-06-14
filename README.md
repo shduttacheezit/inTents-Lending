@@ -36,8 +36,8 @@ The user could also go to the "Your Gear" tab and return their gear from there. 
 ![](https://github.com/shduttacheezit/inTents-Lending_HackbrightProject/blob/master/read-me-images/return_complete.png?raw=true "Return")<br>
 When the lender logs in, their dashboard consists of an option to upload new equipment, <br>
 ![](https://github.com/shduttacheezit/inTents-Lending_HackbrightProject/blob/master/read-me-images/lender_dashboard.png?raw=true "Lender Dashboard")<br>
-And also view their equipment! <br>
-![](https://github.com/shduttacheezit/inTents-Lending_HackbrightProject/blob/master/read-me-images/lender_equipment.png?raw=true "Lender Equipment")<br>
+And also view their equipment! <br> 
+![](https://github.com/shduttacheezit/inTents-Lending_HackbrightProject/blob/master/read-me-images/lenders_equipment.png?raw=true "Lender Equipment")<br>
 
 
 ## <a name="version2"></a>inTentsLending Version 2.0
