@@ -160,7 +160,7 @@ def logout():
     flash('Logged out.')
     return redirect('/')
 
-@app.route('/dashboard')
+@app.route('/dashboard', methods=['GET', 'POST'])
 def dashboard():
     """Shows dashboard from homepage of user logged in"""
 
@@ -174,6 +174,7 @@ def dashboard():
         return render_template("lender.html", lender=lender)
     else:
         raise Exception("Oopsies. You have to login first!")
+
 
 
 @app.route('/camper/<camper_email>', methods=['GET'])
@@ -256,20 +257,23 @@ def lender_dashboard(lender_email):
         db.session.add(gear)
         db.session.commit()
         flash('You successfully uploaded your gear!')
+        return redirect("/equipment/%s" %lender.lender_email)
 
-        return redirect("/equipment/%s"%lender.lender_email)
+@app.route('/equipment/<lender_email>', methods=['GET', 'POST'])
+def uploadedgear(lender_email):
+    """Lender successfully uploaded gear"""
 
-@app.route('/equipment', methods=['GET'])
+    equipment = Equipment.query.filter_by(lender_email=lender_email).all()
+
+    return render_template("equipment.html", equipment=equipment)
+
+
+@app.route('/equipment', methods=['GET', 'POST'])
 def lender_equipment():
     """Lender can see their equipment"""
 
     lender_email = session.get("lender_email")
     equipment = Equipment.query.filter_by(lender_email=lender_email).all()
-
-    camper_email = session.get("camper_email")
-    if camper_email:
-        raise Exception("Hey there, camper! If you want to lend gear out, please log in separately.")
-
 
     return render_template("equipment.html", equipment=equipment)
 
@@ -368,7 +372,7 @@ def rented():
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the
     # point that we invoke the DebugToolbarExtension
-    app.debug = True
+    app.debug = False
     app.jinja_env.auto_reload = app.debug  # make sure templates, etc. are not cached in debug mode
 
     connect_to_db(app)
